@@ -40,6 +40,7 @@ async function main() {
   const urls: string[] = [
     urlBlock('/', 1.0, 'weekly'),
     urlBlock('/intelligence', 0.9, 'daily'),
+    urlBlock('/products/signal', 0.8, 'monthly'),
     urlBlock('/machine', 0.6, 'monthly'),
   ];
   for (const a of articles) {

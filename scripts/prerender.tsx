@@ -7,6 +7,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as React from 'react';
+import { SignalProductSections } from '../src/components/signal/SignalProductSections';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -255,6 +256,16 @@ function MachinePage() {
   );
 }
 
+function ProductSignalPage() {
+  return (
+    <Chrome>
+      <main>
+        <SignalProductSections />
+      </main>
+    </Chrome>
+  );
+}
+
 function ArticleStub({ article }: { article: Article }) {
   return (
     <Chrome>
@@ -321,6 +332,14 @@ async function main() {
     title: 'DELAI — Machine readers',
     description: 'Agent-readable signal page for DELAI. Capabilities, ideal client profile, proof, and how to submit a lead on behalf of a human prospect.',
     canonical: `${ORIGIN}/machine`,
+  }));
+  count++;
+
+  writeRoute('/products/signal', applyTemplate({
+    body: renderToStaticMarkup(<ProductSignalPage />),
+    title: 'Signal — turn anything into a clear, narrated read',
+    description: 'Signal turns a thought, link, PDF, screenshot, or voice note into a sharp, narrated piece — then helps you learn it and remembers what matters to you. A DELAI product. Free to start.',
+    canonical: `${ORIGIN}/products/signal`,
   }));
   count++;
 
