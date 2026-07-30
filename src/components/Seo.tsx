@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { site } from '../content';
 
 interface Props {
   title: string;
@@ -68,14 +69,27 @@ function injectJsonLd(data?: Record<string, unknown> | Array<Record<string, unkn
 const ORGANIZATION: Record<string, unknown> = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'DELAI',
+  name: site.brand,
   alternateName: 'DeLeonAI',
-  legalName: 'DeLeonAI Holdings LLC',
-  url: 'https://meetdelai.com',
-  email: 'hello@meetdelai.com',
-  description: 'DELAI builds operational AI systems for restaurants, hospitality, service businesses, and local commerce — voice + chat assistants, workflow automation, customer-experience systems, and internal intelligence.',
-  brand: 'DELAI',
-  founder: { '@type': 'Person', name: 'Elmer De Leon' },
+  legalName: site.legalName,
+  url: site.contact.site,
+  email: site.contact.email,
+  description: site.summary,
+  brand: site.brand,
+  founder: { '@type': 'Person', name: site.founder },
+  // Only advertise products that are actually in content/site.json. An empty
+  // portfolio must emit no makesOffer key at all — a retired product lingering
+  // in structured data is worse than none, since crawlers cache it.
+  ...(site.portfolio.length > 0
+    ? {
+        makesOffer: site.portfolio.map((p) => ({
+          '@type': 'Offer',
+          name: p.name,
+          description: p.blurb,
+          url: p.url,
+        })),
+      }
+    : {}),
 };
 
 export function personSchema() {

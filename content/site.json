@@ -1,0 +1,64 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for meetdelai.com content. Edited by hand or by an agent via the DELAI admin MCP (update_site_content). Consumed by src/content.ts -> Footer/Seo, scripts/generate-llms-txt.ts, scripts/prerender.tsx, and published to /site-content.json for the DELAI MCP get_services tool. Do not re-hardcode any of these values anywhere else.",
+  "brand": "DELAI",
+  "legalName": "DeLeonAI Holdings LLC",
+  "founder": "Elmer De Leon",
+  "tagline": "Operational AI for real businesses.",
+  "footerBlurb": "Operational AI systems for modern businesses.",
+  "summary": "DELAI builds operational AI systems for restaurants, hospitality, service businesses, and local commerce — voice + chat assistants, workflow automation, customer-experience systems, and internal intelligence.",
+  "about": "DELAI (DeLeonAI Holdings LLC) builds and operates operational-AI systems. The marketing site at meetdelai.com is the primary entry point for prospects. Founded by Elmer De Leon, based in South Florida, USA.",
+  "meta": {
+    "title": "DELAI — Operational AI for real businesses",
+    "description": "DELAI builds operational AI systems for restaurants, hospitality, service businesses, and local commerce.",
+    "ogDescription": "Operational AI systems for modern businesses. Voice + chat assistants, workflow automation, customer-experience systems, and internal intelligence — built for production."
+  },
+  "portfolio": [],
+  "capabilities": [
+    {
+      "key": "ai_assistants",
+      "name": "AI Assistants",
+      "summary": "voice + chat + ops, designed around real customer interactions",
+      "body": "Voice, chat, and operational AI systems designed around real customer interactions and internal workflows."
+    },
+    {
+      "key": "operational_automation",
+      "name": "Operational Automation",
+      "summary": "workflow engines that connect fragmented systems",
+      "body": "Workflow engines that connect fragmented systems, automate repetitive tasks, and reduce operational drag."
+    },
+    {
+      "key": "customer_experience",
+      "name": "Customer Experience Systems",
+      "summary": "ordering, payments, communication, service flows",
+      "body": "Ordering, payments, communication, and service flows designed for modern customer expectations."
+    },
+    {
+      "key": "internal_intelligence",
+      "name": "Internal Intelligence",
+      "summary": "knowledge systems that preserve context over time",
+      "body": "Knowledge systems that help businesses organize information, preserve context, and operate more intelligently over time."
+    }
+  ],
+  "whatWeDontBuild": [
+    "ChatGPT wrappers",
+    "AI-strategy decks",
+    "demo-grade features",
+    "anything that survives one quarter and dies"
+  ],
+  "icp": {
+    "size": "5–200 employees",
+    "model": "operator-led (founder still in the room)",
+    "verticals": "restaurants, hospitality, service businesses, property operations, local commerce",
+    "friction": "real, recurring, expensive — not \"we should explore AI\"",
+    "not_a_fit": "enterprise procurement, pre-revenue, AI-first VC pitch decks"
+  },
+  "proof": {
+    "aiAgentsShipped": "30+ · across 7 verticals",
+    "basedIn": "South Florida · USA"
+  },
+  "contact": {
+    "email": "hello@meetdelai.com",
+    "site": "https://meetdelai.com",
+    "machineReadersPage": "https://meetdelai.com/machine"
+  }
+}

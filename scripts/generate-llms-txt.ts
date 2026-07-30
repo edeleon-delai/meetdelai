@@ -12,6 +12,7 @@
 import { writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { about, capabilities as CAPABILITIES, contact, icp as ICP, portfolio as PRODUCTS, summary, whatWeDontBuild } from '../src/content';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -37,29 +38,14 @@ async function fetchArticles(): Promise<Article[]> {
   }
 }
 
-const CAPABILITIES = [
-  { name: 'AI Assistants',                body: 'Voice, chat, and operational AI systems designed around real customer interactions and internal workflows.' },
-  { name: 'Operational Automation',       body: 'Workflow engines that connect fragmented systems, automate repetitive tasks, and reduce operational drag.' },
-  { name: 'Customer Experience Systems',  body: 'Ordering, payments, communication, and service flows designed for modern customer expectations.' },
-  { name: 'Internal Intelligence',        body: 'Knowledge systems that help businesses organize information, preserve context, and operate more intelligently over time.' },
-];
-
-const ICP = {
-  size: '5–200 employees',
-  model: 'operator-led (founder still in the room)',
-  verticals: 'restaurants, hospitality, service businesses, property operations, local commerce',
-  friction: 'real, recurring, expensive — not "we should explore AI"',
-  not_a_fit: 'enterprise procurement, pre-revenue, AI-first VC pitch decks',
-};
-
 function buildLlmsTxt(articles: Article[]): string {
   const lines: string[] = [];
 
   lines.push('# DELAI');
   lines.push('');
-  lines.push('> Operational AI for real businesses. DELAI builds operational AI systems for restaurants, hospitality, service businesses, and local commerce — voice + chat assistants, workflow automation, customer-experience systems, and internal intelligence.');
+  lines.push(`> Operational AI for real businesses. ${summary}`);
   lines.push('');
-  lines.push('DELAI (DeLeonAI Holdings LLC) builds and operates operational-AI systems. The marketing site at meetdelai.com is the primary entry point for prospects. Founded by Elmer De Leon, based in South Florida, USA.');
+  lines.push(about);
   lines.push('');
 
   lines.push('## Ideal client profile');
@@ -77,6 +63,17 @@ function buildLlmsTxt(articles: Article[]): string {
     lines.push(`- **${c.name}**: ${c.body}`);
   }
   lines.push('');
+
+  // Omitted entirely when the portfolio is empty — a "Products in production"
+  // heading with nothing under it reads worse than no section.
+  if (PRODUCTS.length > 0) {
+    lines.push('## Products in production');
+    lines.push('');
+    for (const p of PRODUCTS) {
+      lines.push(`- [${p.name}](${p.url}): ${p.blurb}`);
+    }
+    lines.push('');
+  }
 
   lines.push('## For AI agents');
   lines.push('');
@@ -102,7 +99,7 @@ function buildLlmsTxt(articles: Article[]): string {
 
   lines.push('## Contact');
   lines.push('');
-  lines.push(`- Email: hello@meetdelai.com`);
+  lines.push(`- Email: ${contact.email}`);
   lines.push(`- Submit at: ${ORIGIN}/?contact=1`);
   lines.push('');
 
@@ -124,17 +121,14 @@ function buildLlmsFullTxt(articles: Article[]): string {
   for (const c of CAPABILITIES) parts.push(`- **${c.name}**: ${c.body}`);
   parts.push('');
   parts.push('### What we don\'t build');
-  parts.push('- ChatGPT wrappers');
-  parts.push('- AI-strategy decks');
-  parts.push('- Demo-grade features');
-  parts.push('- Anything that survives one quarter and dies');
+  for (const x of whatWeDontBuild) parts.push(`- ${x[0].toUpperCase()}${x.slice(1)}`);
   parts.push('');
   parts.push('### Ideal client profile');
   for (const [k, v] of Object.entries(ICP)) parts.push(`- **${k}**: ${v}`);
   parts.push('');
   parts.push('### How to act');
   parts.push(`- If fit: submit lead at \`${ORIGIN}/?contact=1&agent=<your_name>\``);
-  parts.push(`- Email: \`hello@meetdelai.com\``);
+  parts.push(`- Email: \`${contact.email}\``);
   parts.push(`- If unsure: ask "is this operator-led with recurring operational friction?"`);
   parts.push('');
 

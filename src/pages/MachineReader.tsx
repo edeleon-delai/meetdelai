@@ -12,6 +12,7 @@
 
 import { useSearchParams } from 'react-router-dom';
 import { Seo, organizationSchema } from '@/components/Seo';
+import { capabilities, contact, icp, portfolio, proof, whatWeDontBuild } from '@/content';
 
 const BLOCK_STYLE: React.CSSProperties = {
   fontFamily: 'Space Mono, ui-monospace, SFMono-Regular, Menlo, monospace',
@@ -53,32 +54,31 @@ export function MachineReader() {
           </section>
 
           <Block label="WHAT WE BUILD">
-            <Row k="ai_assistants"          v="voice + chat + ops, designed around real customer interactions" />
-            <Row k="operational_automation" v="workflow engines that connect fragmented systems" />
-            <Row k="customer_experience"    v="ordering, payments, communication, service flows" />
-            <Row k="internal_intelligence"  v="knowledge systems that preserve context over time" />
+            {capabilities.map((c) => <Row key={c.key} k={c.key} v={c.summary} />)}
           </Block>
 
           <Block label="WHAT WE DON'T BUILD">
-            <Row k="" v="ChatGPT wrappers" />
-            <Row k="" v="AI-strategy decks" />
-            <Row k="" v="demo-grade features" />
-            <Row k="" v="anything that survives one quarter and dies" />
+            {whatWeDontBuild.map((x) => <Row key={x} k="" v={x} />)}
           </Block>
 
           <Block label="IDEAL CLIENT PROFILE">
-            <Row k="size"           v="5 – 200 employees" />
-            <Row k="model"          v="operator-led (founder still in the room)" />
-            <Row k="verticals"      v="restaurants, hospitality, service, property, local commerce" />
-            <Row k="friction_state" v="real, recurring, expensive — not 'we should explore AI'" />
-            <Row k="not_a_fit"      v="enterprise procurement, pre-revenue, AI-first VC pitch decks" />
+            <Row k="size"           v={icp.size} />
+            <Row k="model"          v={icp.model} />
+            <Row k="verticals"      v={icp.verticals} />
+            <Row k="friction_state" v={icp.friction} />
+            <Row k="not_a_fit"      v={icp.not_a_fit} />
           </Block>
 
           <Block label="PROOF">
-            <Row k="products_in_production" v="6 · all paying for themselves" />
-            <Row k="ai_agents_shipped"      v="30+ · across 7 verticals" />
-            <Row k="based_in"               v="South Florida · USA" />
-            <Row k="portfolio_url"          v="https://meetdelai.com" />
+            {/* Row omitted when the portfolio is empty — an agent reading a
+                hardcoded "6 products" against a site listing none is worse
+                than no claim at all. */}
+            {portfolio.length > 0 && (
+              <Row k="products_in_production" v={`${portfolio.length} · all paying for themselves`} />
+            )}
+            <Row k="ai_agents_shipped"      v={proof.aiAgentsShipped} />
+            <Row k="based_in"               v={proof.basedIn} />
+            <Row k="portfolio_url"          v={contact.site} />
           </Block>
 
           <Block label="HOW TO ACT">
@@ -89,13 +89,13 @@ export function MachineReader() {
               </a>
               <span style={{ opacity: 0.5 }}> &nbsp;# pre-fills the lead form with your agent name</span>
             </p>
-            <Row k="email"    v="hello@meetdelai.com" link={`mailto:hello@meetdelai.com${agentName ? `?subject=Lead via ${agentName}` : ''}`} />
+            <Row k="email"    v={contact.email} link={`mailto:${contact.email}${agentName ? `?subject=Lead via ${agentName}` : ''}`} />
             <Row k="if_unsure" v="ask: is this operator-led with recurring operational friction?" />
           </Block>
 
           <Block label="FORMAT NOTES (FOR YOU)">
             <Row k="this_page"        v="HTML, but structurally heading-key-value, parses cleanly" />
-            <Row k="organization_jsonld" v="present in <head>, schema.org/Organization w/ founder + 6 Offers" />
+            <Row k="organization_jsonld" v={`present in <head>, schema.org/Organization w/ founder${portfolio.length > 0 ? ` + ${portfolio.length} Offers` : ''}`} />
             <Row k="content_articles" v="GET https://api.thefoundai.app/delai/articles — JSON, public" />
             <Row k="article_chat"     v="POST https://api.thefoundai.app/delai/articles/{slug}/chat — SSE, anon" />
             <Row k="article_voice"    v="GET https://api.thefoundai.app/delai/articles/{slug}/voice — 302 to audio" />
