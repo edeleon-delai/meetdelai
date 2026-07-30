@@ -38,15 +38,6 @@ async function fetchArticles(): Promise<Article[]> {
   }
 }
 
-const PORTFOLIO = [
-  { name: 'Found',    tag: 'Operational intelligence',  blurb: 'Operational intelligence for people and teams.' },
-  { name: 'Modus',    tag: 'SMB automation',            blurb: 'Automation systems for SMB operations.' },
-  { name: 'BiTES',    tag: 'Food intelligence',         blurb: 'AI-powered food intelligence and nutrition tracking.' },
-  { name: 'HostGPT',  tag: 'Hospitality AI',            blurb: 'Hospitality AI for guest communication and operations.' },
-  { name: 'PAGE',     tag: 'Payments',                  blurb: 'Modern payment tools for independent operators.' },
-  { name: 'Munchies', tag: 'Conversational ordering',   blurb: 'Conversational ordering and delivery infrastructure.' },
-];
-
 const CAPABILITIES = [
   { name: 'AI Assistants',                body: 'Voice, chat, and operational AI systems designed around real customer interactions and internal workflows.' },
   { name: 'Operational Automation',       body: 'Workflow engines that connect fragmented systems, automate repetitive tasks, and reduce operational drag.' },
@@ -314,7 +305,7 @@ async function main() {
   writeRoute('/', applyTemplate({
     body: renderToStaticMarkup(<HomePage />),
     title: 'DELAI — Operational AI for real businesses',
-    description: 'DELAI builds operational AI systems for restaurants, hospitality, service businesses, and local commerce. Six products in production prove the platform works.',
+    description: 'DELAI builds operational AI systems for restaurants, hospitality, service businesses, and local commerce.',
     canonical: `${ORIGIN}/`,
   }));
   count++;

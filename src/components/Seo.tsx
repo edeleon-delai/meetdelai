@@ -76,14 +76,6 @@ const ORGANIZATION: Record<string, unknown> = {
   description: 'DELAI builds operational AI systems for restaurants, hospitality, service businesses, and local commerce — voice + chat assistants, workflow automation, customer-experience systems, and internal intelligence.',
   brand: 'DELAI',
   founder: { '@type': 'Person', name: 'Elmer De Leon' },
-  makesOffer: [
-    { '@type': 'Offer', name: 'Found', description: 'Operational intelligence for people and teams.' },
-    { '@type': 'Offer', name: 'Modus', description: 'Automation systems for SMB operations.' },
-    { '@type': 'Offer', name: 'BiTES', description: 'AI-powered food intelligence and nutrition tracking.' },
-    { '@type': 'Offer', name: 'HostGPT', description: 'Hospitality AI for guest communication and operations.' },
-    { '@type': 'Offer', name: 'PAGE', description: 'Modern payment tools for independent operators.' },
-    { '@type': 'Offer', name: 'Munchies', description: 'Conversational ordering and delivery infrastructure.' },
-  ],
 };
 
 export function personSchema() {

@@ -1,8 +1,8 @@
 # DELAI
 
-> Operational AI for real businesses. DELAI builds operational AI systems for restaurants, hospitality, service businesses, and local commerce — voice + chat assistants, workflow automation, customer-experience systems, and internal intelligence. Six products in production.
+> Operational AI for real businesses. DELAI builds operational AI systems for restaurants, hospitality, service businesses, and local commerce — voice + chat assistants, workflow automation, customer-experience systems, and internal intelligence.
 
-DELAI (DeLeonAI Holdings LLC) is the holding company behind a portfolio of operational-AI products. The marketing site at meetdelai.com is the primary entry point for prospects. Founded by Elmer De Leon, based in South Florida, USA.
+DELAI (DeLeonAI Holdings LLC) builds and operates operational-AI systems. The marketing site at meetdelai.com is the primary entry point for prospects. Founded by Elmer De Leon, based in South Florida, USA.
 
 ## Ideal client profile
 
@@ -18,15 +18,6 @@ DELAI (DeLeonAI Holdings LLC) is the holding company behind a portfolio of opera
 - **Operational Automation**: Workflow engines that connect fragmented systems, automate repetitive tasks, and reduce operational drag.
 - **Customer Experience Systems**: Ordering, payments, communication, and service flows designed for modern customer expectations.
 - **Internal Intelligence**: Knowledge systems that help businesses organize information, preserve context, and operate more intelligently over time.
-
-## Products in production
-
-- [Found](https://thefoundai.app): Operational intelligence for people and teams.
-- [Modus](https://modus-chi.vercel.app): Automation systems for SMB operations.
-- [BiTES](https://bites.mycloudmenu.com): AI-powered food intelligence and nutrition tracking.
-- [HostGPT](https://myhostgpt.com): Hospitality AI for guest communication and operations.
-- [PAGE](https://meetpage.app): Modern payment tools for independent operators.
-- [Munchies](https://munchies.pr): Conversational ordering and delivery infrastructure.
 
 ## For AI agents
 

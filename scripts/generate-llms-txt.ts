@@ -44,15 +44,6 @@ const CAPABILITIES = [
   { name: 'Internal Intelligence',        body: 'Knowledge systems that help businesses organize information, preserve context, and operate more intelligently over time.' },
 ];
 
-const PRODUCTS = [
-  { name: 'Found',    url: 'https://thefoundai.app',           blurb: 'Operational intelligence for people and teams.' },
-  { name: 'Modus',    url: 'https://modus-chi.vercel.app',     blurb: 'Automation systems for SMB operations.' },
-  { name: 'BiTES',    url: 'https://bites.mycloudmenu.com',    blurb: 'AI-powered food intelligence and nutrition tracking.' },
-  { name: 'HostGPT',  url: 'https://myhostgpt.com',            blurb: 'Hospitality AI for guest communication and operations.' },
-  { name: 'PAGE',     url: 'https://meetpage.app',             blurb: 'Modern payment tools for independent operators.' },
-  { name: 'Munchies', url: 'https://munchies.pr',              blurb: 'Conversational ordering and delivery infrastructure.' },
-];
-
 const ICP = {
   size: '5–200 employees',
   model: 'operator-led (founder still in the room)',
@@ -66,9 +57,9 @@ function buildLlmsTxt(articles: Article[]): string {
 
   lines.push('# DELAI');
   lines.push('');
-  lines.push('> Operational AI for real businesses. DELAI builds operational AI systems for restaurants, hospitality, service businesses, and local commerce — voice + chat assistants, workflow automation, customer-experience systems, and internal intelligence. Six products in production.');
+  lines.push('> Operational AI for real businesses. DELAI builds operational AI systems for restaurants, hospitality, service businesses, and local commerce — voice + chat assistants, workflow automation, customer-experience systems, and internal intelligence.');
   lines.push('');
-  lines.push('DELAI (DeLeonAI Holdings LLC) is the holding company behind a portfolio of operational-AI products. The marketing site at meetdelai.com is the primary entry point for prospects. Founded by Elmer De Leon, based in South Florida, USA.');
+  lines.push('DELAI (DeLeonAI Holdings LLC) builds and operates operational-AI systems. The marketing site at meetdelai.com is the primary entry point for prospects. Founded by Elmer De Leon, based in South Florida, USA.');
   lines.push('');
 
   lines.push('## Ideal client profile');
@@ -84,13 +75,6 @@ function buildLlmsTxt(articles: Article[]): string {
   lines.push('');
   for (const c of CAPABILITIES) {
     lines.push(`- **${c.name}**: ${c.body}`);
-  }
-  lines.push('');
-
-  lines.push('## Products in production');
-  lines.push('');
-  for (const p of PRODUCTS) {
-    lines.push(`- [${p.name}](${p.url}): ${p.blurb}`);
   }
   lines.push('');
 
