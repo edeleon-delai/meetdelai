@@ -1,7 +1,12 @@
 {
   "compilerOptions": {
     "target": "ES2023",
-    "lib": ["ES2023"],
+    // DOM is here for typechecking only. scripts/prerender.tsx renders the real
+    // page components with react-dom/server, so this project now sees browser
+    // code — but it still runs under Node, where `window` and `document` do not
+    // exist. Everything reached from a script guards with `typeof window`.
+    // vite/client types `import.meta.env`, which those components read.
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
@@ -11,7 +16,7 @@
     "moduleDetection": "force",
     "noEmit": true,
     "strict": true,
-    "types": ["node"],
+    "types": ["node", "vite/client"],
     "jsx": "react-jsx"
   },
   "include": ["vite.config.ts", "scripts/**/*.ts", "scripts/**/*.tsx"]

@@ -1,0 +1,89 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for the South Florida service-area pages. Read via src/content.ts (typed). Consumed by /south-florida, /south-florida/:slug, the footer, the home service-area band, JSON-LD areaServed, the sitemap, and the prerenderer. Never restate a city, region, or meta string in a component.",
+  "locations": [
+    {
+      "slug": "miami",
+      "city": "Miami",
+      "region": "Miami-Dade County",
+      "h1": "AI Automation Company in Miami",
+      "metaTitle": "AI Automation Company in Miami, FL | AI Consulting | DELAI",
+      "metaDesc": "DELAI is an AI automation company in Miami. We build AI workflow automation, internal tools, and connected systems for small and medium businesses across Miami-Dade County.",
+      "lead": "We build AI workflow automation and internal systems for Miami businesses — on-site in Brickell, Doral, Coral Gables, and everywhere else in Miami-Dade.",
+      "body": "Miami companies grow fast and accumulate software faster. The usual result is a twelve-person team running operations across a CRM nobody trusts, three shared inboxes, WhatsApp, and a spreadsheet that one person maintains. DELAI comes in, maps how the work actually moves, and rebuilds the worst of it as software that runs on its own.",
+      "areas": ["Brickell", "Downtown Miami", "Wynwood", "Coral Gables", "Doral", "Miami Beach", "Kendall", "Hialeah", "Aventura", "Coconut Grove"],
+      "industries": ["Property management", "Logistics and trade", "Professional services", "Healthcare practices", "Hospitality", "Construction"]
+    },
+    {
+      "slug": "miami-dade-county",
+      "city": "Miami-Dade County",
+      "region": "Miami-Dade County, Florida",
+      "h1": "AI Automation Across Miami-Dade County",
+      "metaTitle": "AI Automation for Miami-Dade County Businesses | DELAI",
+      "metaDesc": "DELAI builds AI automation, internal tools, and connected operational systems for businesses across Miami-Dade County — Doral, Hialeah, Coral Gables, Kendall, and Aventura.",
+      "lead": "Workflow automation, internal tools, and connected systems for companies across Miami-Dade — from Doral warehouses to Coral Gables offices.",
+      "body": "Miami-Dade is where most of our on-site work happens, and the pattern repeats across industries: a capable team, six systems that don't talk to each other, and a coordinator holding it together by hand. We start with the process costing the most hours, rebuild it properly, then move to the next one.",
+      "areas": ["Doral", "Hialeah", "Coral Gables", "Kendall", "Aventura", "Miami Beach", "Homestead", "Miami Lakes", "North Miami", "Sweetwater"],
+      "industries": ["Logistics and trade", "Property management", "Wholesale and distribution", "Healthcare practices", "Construction", "Professional services"]
+    },
+    {
+      "slug": "fort-lauderdale",
+      "city": "Fort Lauderdale",
+      "region": "Broward County",
+      "h1": "Business Automation in Fort Lauderdale",
+      "metaTitle": "Fort Lauderdale Business Automation & AI Consulting | DELAI",
+      "metaDesc": "Fort Lauderdale business automation from DELAI. AI workflow automation, process automation, and custom internal tools for companies across Broward County.",
+      "lead": "Business process automation and AI systems for Fort Lauderdale companies — from Las Olas to Oakland Park, on-site across Broward.",
+      "body": "Fort Lauderdale runs on service businesses: marine, construction, real estate, legal, medical. Every one of them has the same bottleneck — coordination. Requests, quotes, scheduling, approvals, and follow-up, all moving by hand. That's exactly the work we automate first, because it pays for itself fastest.",
+      "areas": ["Downtown Fort Lauderdale", "Las Olas", "Flagler Village", "Victoria Park", "Oakland Park", "Wilton Manors", "Plantation", "Davie", "Pompano Beach", "Sunrise"],
+      "industries": ["Marine and yachting services", "Construction and trades", "Real estate", "Legal services", "Healthcare", "Property management"]
+    },
+    {
+      "slug": "broward-county",
+      "city": "Broward County",
+      "region": "Broward County, Florida",
+      "h1": "AI Workflow Automation in Broward County",
+      "metaTitle": "AI Workflow Automation for Broward County Businesses | DELAI",
+      "metaDesc": "DELAI builds AI workflow automation for small and medium businesses across Broward County — Hollywood, Pembroke Pines, Coral Springs, Weston, and Fort Lauderdale.",
+      "lead": "AI workflow automation for small and medium businesses across Broward County — Hollywood, Pembroke Pines, Coral Springs, Weston, and everywhere between.",
+      "body": "Broward is full of thirty-to-eighty person companies that outgrew their tooling three years ago and never got a chance to fix it. You don't need a platform migration. You need the four processes that consume the most hours rebuilt properly. We start with one, prove it, then keep going.",
+      "areas": ["Fort Lauderdale", "Hollywood", "Pembroke Pines", "Coral Springs", "Weston", "Sunrise", "Miramar", "Plantation", "Davie", "Deerfield Beach"],
+      "industries": ["Property management", "Construction and trades", "Distribution and wholesale", "Professional services", "Home services", "Healthcare"]
+    },
+    {
+      "slug": "palm-beach-county",
+      "city": "Palm Beach County",
+      "region": "Palm Beach County, Florida",
+      "h1": "AI Systems for Palm Beach County Businesses",
+      "metaTitle": "AI Automation & Consulting in Palm Beach County | DELAI",
+      "metaDesc": "AI automation and custom software for Palm Beach County businesses — Boca Raton, West Palm Beach, Delray Beach, and Jupiter. Built and operated by DELAI.",
+      "lead": "AI systems, internal tools, and process automation for Palm Beach County — Boca Raton, West Palm Beach, Delray Beach, and Jupiter.",
+      "body": "Palm Beach County has an unusual concentration of small firms doing high-value work: wealth management, specialty medical, luxury property, professional services. The margin isn't in headcount, it's in what your existing team can handle without dropping anything. That's an automation problem, and it's the one we solve.",
+      "areas": ["West Palm Beach", "Boca Raton", "Delray Beach", "Jupiter", "Boynton Beach", "Wellington", "Palm Beach Gardens", "Lake Worth", "Royal Palm Beach", "Palm Beach"],
+      "industries": ["Wealth and financial services", "Specialty medical practices", "Luxury property management", "Professional services", "Hospitality", "Nonprofits"]
+    },
+    {
+      "slug": "west-palm-beach",
+      "city": "West Palm Beach",
+      "region": "Palm Beach County",
+      "h1": "AI Automation in West Palm Beach",
+      "metaTitle": "West Palm Beach AI Automation & Custom Software | DELAI",
+      "metaDesc": "DELAI builds AI workflow automation and internal tools for West Palm Beach businesses, working on-site across Palm Beach County.",
+      "lead": "Process automation and internal tools for West Palm Beach companies, on-site across Palm Beach County.",
+      "body": "West Palm Beach firms tend to be small, senior, and busy — which means nobody has a spare month to fix operations. We work in short cycles: one process at a time, running in production, with your team trained on it before we move on.",
+      "areas": ["Downtown West Palm Beach", "Northwood", "El Cid", "Flamingo Park", "Palm Beach", "Riviera Beach", "Lake Worth", "Palm Beach Gardens", "Wellington", "Jupiter"],
+      "industries": ["Wealth and financial services", "Legal services", "Specialty medical practices", "Real estate", "Hospitality", "Nonprofits"]
+    },
+    {
+      "slug": "boca-raton",
+      "city": "Boca Raton",
+      "region": "Palm Beach County",
+      "h1": "AI Systems for Boca Raton Businesses",
+      "metaTitle": "Boca Raton AI Automation & Business Systems | DELAI",
+      "metaDesc": "AI systems, internal tools, and process automation for Boca Raton businesses — designed, built, and operated by DELAI.",
+      "lead": "AI systems, internal tools, and process automation for Boca Raton, on-site across south Palm Beach County.",
+      "body": "Boca has a dense mix of professional firms, medical practices, and small software companies. Most already have decent tooling. What's missing is the connective layer and the handful of automations that let the same team handle more without dropping anything.",
+      "areas": ["Downtown Boca Raton", "Mizner Park", "Boca Center", "Deerfield Beach", "Delray Beach", "Highland Beach", "Parkland", "Coral Springs", "Boynton Beach", "Wellington"],
+      "industries": ["Professional services", "Specialty medical practices", "Software and technology", "Real estate", "Financial services", "Education"]
+    }
+  ]
+}

@@ -1,19 +1,50 @@
 /**
- * Slim prerender for meetdelai.com — emits static HTML for /, /intelligence,
- * and /intelligence/:slug so crawlers see content, not an empty root.
+ * Prerender for meetdelai.com — emits static HTML per route into dist/ after
+ * `vite build`, so crawlers get content instead of an empty <div id="root">.
+ *
+ * The redesigned marketing routes are rendered from the real page components
+ * via `marketingRoutes()` + MemoryRouter, which is the only way the static
+ * markup and the live app stay identical. The pre-redesign surfaces
+ * (/machine, /intelligence, /products/signal) keep their hand-written static
+ * versions below, because they still render on the old dark tokens.
+ *
+ * Titles, descriptions, canonicals and JSON-LD all come from lib/siteSeo — the
+ * same module the runtime <SiteSeo> uses.
+ *
+ * Run it via the npm script, not `tsx scripts/prerender.tsx` directly: it needs
+ * `--tsconfig tsconfig.app.json`. tsx resolves the nearest tsconfig.json, which
+ * here is the solution file with `files: []`, so no jsx setting matches src/**
+ * and every component gets transpiled with the classic React.createElement
+ * factory — which throws "React is not defined" the moment a page renders.
  */
 import { renderToStaticMarkup } from 'react-dom/server';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as React from 'react';
+import { MemoryRouter, Routes } from 'react-router-dom';
 import { SignalProductSections } from '../src/components/signal/SignalProductSections';
-import { capabilities as CAPABILITIES, contact, icp, meta, portfolio, proof, whatWeDontBuild } from '../src/content';
+import { marketingRoutes } from '../src/marketingRoutes';
+import {
+  buildJsonLd,
+  marketingRoutes as marketingRouteList,
+  seoFor,
+  SITE_BASE,
+} from '../src/lib/siteSeo';
+import {
+  capabilities as CAPABILITIES,
+  contact,
+  icp,
+  portfolio,
+  proof,
+  seedProjects,
+  whatWeDontBuild,
+} from '../src/content';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const DIST = join(ROOT, 'dist');
-const ORIGIN = 'https://meetdelai.com';
+const ORIGIN = SITE_BASE;
 const ARTICLES_API = (process.env.VITE_API_URL || 'https://api.thefoundai.app') + '/delai/articles?limit=200';
 
 interface Article {
@@ -38,6 +69,8 @@ async function fetchArticles(): Promise<Article[]> {
     return [];
   }
 }
+
+/* ------------------------------------------------- pre-redesign surfaces */
 
 const OPERATING_PRINCIPLES = [
   'Observability from day one',
@@ -67,70 +100,6 @@ function Chrome({ children }: { children: React.ReactNode }) {
         </div>
       </footer>
     </>
-  );
-}
-
-function HomePage() {
-  return (
-    <Chrome>
-      <main>
-        <section className="mx-auto max-w-6xl px-5 sm:px-8 pt-20 sm:pt-32 pb-24">
-          <p className="label-mono mb-8">DELAI</p>
-          <h1 className="font-display text-headline-xl text-ink max-w-4xl">
-            Operational AI for real businesses.
-          </h1>
-          <p className="mt-8 text-body-lg text-ink-muted max-w-3xl">
-            The next generation of business software will not be dashboards and manual workflows.
-            It will be systems that observe, respond, automate, and operate alongside the business in real time.
-          </p>
-          <p className="mt-4 text-body-lg text-ink max-w-3xl">DELAI builds those systems.</p>
-        </section>
-
-        <section className="border-t border-line">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8 py-24">
-            <p className="label-mono mb-6">Built for operators</p>
-            <h2 className="font-display text-headline-lg text-ink max-w-3xl">
-              Restaurants. Hospitality. Service businesses. Property operations. Local commerce.
-            </h2>
-            <p className="mt-8 text-body-md text-ink-muted max-w-3xl">
-              Businesses that move fast do not need more software tabs. They need operational systems that reduce friction,
-              automate repetitive work, improve customer experience, and help teams move faster with less overhead.
-            </p>
-          </div>
-        </section>
-
-        <section className="border-t border-line">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8 py-24">
-            <p className="label-mono mb-6">What DELAI builds</p>
-            <div className="grid sm:grid-cols-2 gap-6">
-              {CAPABILITIES.map((c) => (
-                <div key={c.name} className="border border-line p-6">
-                  <h3 className="font-display text-2xl text-ink">{c.name}</h3>
-                  <p className="mt-3 text-sm text-ink-muted">{c.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Products in production — hidden, dedicated /products page coming */}
-
-        <section className="border-t border-line">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8 py-24">
-            <p className="label-mono mb-6">How DELAI operates</p>
-            <h2 className="font-display text-headline-lg text-ink">Built for production.</h2>
-            <p className="mt-4 text-body-md text-ink-muted max-w-3xl">
-              The goal is not to generate demos. The goal is to create systems that survive real operational environments.
-            </p>
-            <ul className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {OPERATING_PRINCIPLES.map((p) => (
-                <li key={p} className="border border-line p-5 text-sm text-ink">{p}</li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      </main>
-    </Chrome>
   );
 }
 
@@ -210,13 +179,15 @@ function MachinePage() {
           ['portfolio_url',          contact.site],
         ])}
         {block('HOW TO ACT', [
-          ['if_fit',       `submit: ${contact.site}/?contact=1&agent=unidentified`],
+          ['if_fit',       `submit: ${contact.site}/contact`],
           ['email',        contact.email],
           ['if_unsure',    'ask: is this operator-led with recurring operational friction?'],
         ])}
         {block('FORMAT NOTES (FOR YOU)', [
           ['this_page',           'HTML, structurally heading-key-value, parses cleanly'],
           ['organization_jsonld', `present in <head>, schema.org/Organization w/ founder${portfolio.length > 0 ? ` + ${portfolio.length} Offers` : ''}`],
+          ['services_index',      `${contact.site}/services — six services, one page each`],
+          ['service_areas',       `${contact.site}/south-florida — Miami-Dade, Broward, Palm Beach`],
           ['content_articles',    'GET https://api.thefoundai.app/delai/articles — JSON, public'],
           ['article_chat',        'POST https://api.thefoundai.app/delai/articles/{slug}/chat — SSE, anon'],
           ['article_voice',       'GET https://api.thefoundai.app/delai/articles/{slug}/voice — 302 to audio'],
@@ -259,17 +230,38 @@ function ArticleStub({ article }: { article: Article }) {
   );
 }
 
+/* ---------------------------------------------------------------- output */
+
 const indexHtmlTemplate = readFileSync(join(DIST, 'index.html'), 'utf-8');
 
-function applyTemplate({ body, title, description, canonical }: { body: string; title: string; description: string; canonical: string }): string {
+function applyTemplate({
+  body,
+  title,
+  description,
+  canonical,
+  jsonLd,
+}: {
+  body: string;
+  title: string;
+  description: string;
+  canonical: string;
+  jsonLd?: unknown;
+}): string {
   let html = indexHtmlTemplate;
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(title)}</title>`);
   html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
   html = html.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
   html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
-  if (!html.includes('rel="canonical"')) {
-    html = html.replace('</head>', `    <link rel="canonical" href="${canonical}" />\n  </head>`);
+  html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${canonical}" />`);
+
+  const head: string[] = [`    <link rel="canonical" href="${canonical}" />`];
+  if (jsonLd) {
+    // The runtime replaces this node by id, so a hydrating page updates the
+    // graph rather than appending a second one.
+    head.push(`    <script type="application/ld+json" id="delai-ld">${jsonLdSafe(jsonLd)}</script>`);
   }
+  html = html.replace('</head>', `${head.join('\n')}\n  </head>`);
+
   if (!html.includes('<div id="root"></div>')) throw new Error('Could not find <div id="root"></div> in dist/index.html');
   html = html.replace('<div id="root"></div>', `<div id="root">${body}</div>`);
   return html;
@@ -279,24 +271,50 @@ function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+/** JSON-LD sits in a raw <script>, so only `<` needs neutralising. */
+function jsonLdSafe(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, '\\u003c');
+}
+
 function writeRoute(route: string, html: string): void {
   const path = route === '/' ? join(DIST, 'index.html') : join(DIST, route.replace(/^\//, ''), 'index.html');
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, html);
 }
 
+/** Render one redesigned route through the app's own component tree. */
+function renderMarketing(path: string): string {
+  return renderToStaticMarkup(
+    <MemoryRouter initialEntries={[path]}>
+      <Routes>{marketingRoutes()}</Routes>
+    </MemoryRouter>,
+  );
+}
+
 async function main() {
   const articles = await fetchArticles();
   let count = 0;
 
-  writeRoute('/', applyTemplate({
-    body: renderToStaticMarkup(<HomePage />),
-    title: meta.title,
-    description: meta.description,
-    canonical: `${ORIGIN}/`,
-  }));
-  count++;
+  // Redesigned site. Projects come from the shipped seed — the admin's
+  // localStorage edits exist only in the editor's browser and cannot be
+  // prerendered, which is exactly why moving them to a real store is on the
+  // launch checklist.
+  for (const route of marketingRouteList(seedProjects)) {
+    const seo = seoFor(route, seedProjects);
+    writeRoute(
+      seo.path,
+      applyTemplate({
+        body: renderMarketing(seo.path),
+        title: seo.title,
+        description: seo.desc,
+        canonical: ORIGIN + seo.path,
+        jsonLd: buildJsonLd(route, seo, seedProjects),
+      }),
+    );
+    count++;
+  }
 
+  // Pre-redesign surfaces.
   writeRoute('/intelligence', applyTemplate({
     body: renderToStaticMarkup(<IntelligenceIndex articles={articles} />),
     title: 'Writing — DELAI',

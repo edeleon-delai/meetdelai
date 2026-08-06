@@ -7,11 +7,11 @@
     "dev": "vite",
     "prebuild": "tsx scripts/publish-site-content.ts && tsx scripts/generate-sitemap.ts && tsx scripts/generate-llms-txt.ts",
     "build": "tsc -b && vite build",
-    "postbuild": "tsx scripts/prerender.tsx",
+    "postbuild": "tsx --tsconfig tsconfig.app.json scripts/prerender.tsx",
     "site-content": "tsx scripts/publish-site-content.ts",
     "sitemap": "tsx scripts/generate-sitemap.ts",
     "llms": "tsx scripts/generate-llms-txt.ts",
-    "prerender": "tsx scripts/prerender.tsx",
+    "prerender": "tsx --tsconfig tsconfig.app.json scripts/prerender.tsx",
     "preview": "vite preview --host",
     "lint": "eslint ."
   },
