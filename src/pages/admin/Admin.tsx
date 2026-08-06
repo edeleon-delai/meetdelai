@@ -13,6 +13,7 @@ import { SiteSeo } from '../../components/site/SiteSeo';
 import {
   ApiTab,
   ChecklistTab,
+  LeadsTab,
   MediaTab,
   OverviewTab,
   ProjectEditor,
@@ -21,7 +22,7 @@ import {
   type ActivityRow,
 } from './adminTabs';
 
-type Tab = 'overview' | 'projects' | 'queue' | 'media' | 'api' | 'settings';
+type Tab = 'overview' | 'projects' | 'queue' | 'leads' | 'media' | 'api' | 'settings';
 
 /**
  * Prototype gate. The comp shipped a literal password in the source; this repo
@@ -44,6 +45,9 @@ export function Admin() {
 
   const [authed, setAuthed] = useState(false);
   const [pw, setPw] = useState('');
+  // Held in memory only (never persisted) so the Leads tab can authenticate to
+  // /api/leads, which checks it server-side.
+  const [sessionPw, setSessionPw] = useState('');
   const [authError, setAuthError] = useState('');
   const [tab, setTab] = useState<Tab>('overview');
   const [editing, setEditing] = useState<Project | null>(null);
@@ -197,6 +201,7 @@ export function Admin() {
                 if (pw === ADMIN_PASSWORD) {
                   setAuthed(true);
                   setAuthError('');
+                  setSessionPw(pw);
                   setPw('');
                   setTab('overview');
                 } else {
@@ -268,6 +273,7 @@ export function Admin() {
                 type="button"
                 onClick={() => {
                   setAuthed(false);
+                  setSessionPw('');
                   setTab('overview');
                   setEditing(null);
                 }}
@@ -284,6 +290,7 @@ export function Admin() {
                 <NavBtn active={tab === 'overview'} onClick={() => go('overview')} label="Overview" />
                 <NavBtn active={tab === 'projects'} onClick={() => go('projects')} label="Projects" count={projects.length} />
                 <NavBtn active={tab === 'queue'} onClick={() => go('queue')} label="Review queue" count={queue.length} />
+                <NavBtn active={tab === 'leads'} onClick={() => go('leads')} label="Leads" />
                 <NavBtn active={tab === 'media'} onClick={() => go('media')} label="Media" />
                 <NavBtn active={tab === 'api'} onClick={() => go('api')} label="Hermes integration" />
                 <NavBtn active={tab === 'settings'} onClick={() => go('settings')} label="Launch checklist" />
@@ -354,6 +361,8 @@ export function Admin() {
                   onError={(m) => setToast(m)}
                 />
               )}
+
+              {tab === 'leads' && <LeadsTab password={sessionPw} />}
 
               {tab === 'api' && <ApiTab />}
               {tab === 'settings' && <ChecklistTab />}

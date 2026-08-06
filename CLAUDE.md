@@ -69,6 +69,29 @@ tools: get_site_content, update_site_content
 - Only `status: "published"` projects are reachable off `/admin` — `/work/:slug` refuses a draft slug rather than rendering it.
 - `/admin` is `noindex,nofollow`, `Disallow`ed in robots.txt, and not prerendered.
 
+## Leads — the one server-side path
+
+`/contact` ("Find Your First Automation") is **not** a mailto hand-off any more. It posts to `POST /api/lead`, a Vercel function that:
+
+1. stores the lead on the DELAI API (`POST /delai/leads`, anonymous) — the same store the admin MCP's `list_leads` reads;
+2. emails `LEAD_NOTIFY_EMAIL` (default `edeleon@meetdelai.com`) through Resend.
+
+**Storage is the contract; email is best-effort.** If Resend is unset or errors the lead is still saved and the response is still `201` — with `emailed: false`. Losing a lead because a mail API had a bad minute is the worse failure. If the POST fails outright the form shows a mailto link pre-filled with what they typed, so nothing is lost.
+
+`GET /api/leads` backs the admin's Leads tab. It holds `DELAI_ADMIN_SECRET` server-side (upstream `GET /delai/leads` is 401 without it) and gates itself on `ADMIN_PASSWORD`, checked against an env var. **This is the only real access boundary in the admin** — the sign-in screen compares `VITE_ADMIN_PASSWORD`, which is compiled into the public bundle. Set `ADMIN_PASSWORD` to the same value so one sign-in unlocks both.
+
+Env vars (Vercel project settings, never the repo) — see `.env.example`:
+
+| Var | Side | Without it |
+|---|---|---|
+| `VITE_ADMIN_PASSWORD` | client | `/admin` cannot be signed into |
+| `ADMIN_PASSWORD` | server | Leads tab returns 503 |
+| `DELAI_ADMIN_SECRET` | server | Leads tab returns 503 |
+| `RESEND_API_KEY` | server | leads still stored, no email |
+| `LEAD_NOTIFY_EMAIL` / `LEAD_FROM_EMAIL` | server | defaults above; `from` must be on a Resend-verified domain |
+
+**`vite dev` serves no functions** — `/api/lead` and `/api/leads` 404 locally. Use `vercel dev` or a preview deployment to exercise them. `vercel.json`'s SPA rewrite is `/((?!api/).*)` precisely so `/api` is never swallowed by it.
+
 ## Gotchas
 
 - **Prerendered, not SSR.** `scripts/prerender.tsx` writes static HTML per route into `dist/` after `vite build`. The redesigned routes render through the real components; the dark pages keep hand-written static copies in that script. `index.html` is only the Vite template. `/machine` exists **twice** — runtime (`MachineReader.tsx`) and static (`prerender.tsx`) — keep them in step; both read `site.json`.

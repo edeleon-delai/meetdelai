@@ -1,5 +1,8 @@
-/** Tab bodies for /admin. Presentational — all state lives in Admin.tsx. */
-import { useRef, useState } from 'react';
+/**
+ * Tab bodies for /admin. Presentational, with one exception: LeadsTab owns its
+ * own fetch, because leads are the only thing here that lives on a server.
+ */
+import { useEffect, useRef, useState } from 'react';
 import type { Project, ProjectStatus } from '../../content';
 import type { QueueItem } from '../../lib/portfolio';
 import { fileToCoverDataUrl } from '../../lib/image';
@@ -749,6 +752,140 @@ Authorization: Bearer <HUMAN_SESSION>
   );
 }
 
+/* ---------------------------------------------------------------- leads */
+
+export interface Lead {
+  id: string;
+  contact_name?: string;
+  email?: string;
+  business_name?: string;
+  goal?: string;
+  source?: string;
+  status?: string;
+  created_at?: string;
+}
+
+/**
+ * Reads through the same-origin /api/leads function, which holds the DELAI
+ * admin secret server-side. The browser never sees it — the only thing sent
+ * from here is the admin password, which that function checks against an env
+ * var rather than against anything compiled into this bundle.
+ */
+export function LeadsTab({ password }: { password: string }) {
+  const [leads, setLeads] = useState<Lead[] | null>(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+    setError('');
+    setLeads(null);
+    fetch('/api/leads', { headers: { 'x-admin-password': password } })
+      .then(async (r) => {
+        const data = (await r.json().catch(() => null)) as { leads?: Lead[]; error?: string } | null;
+        if (!r.ok) throw new Error(data?.error || `Request failed (${r.status})`);
+        // A 200 that isn't the expected JSON means the function did not answer
+        // — under `vite dev` the SPA fallback returns index.html with status
+        // 200. Falling through to `[]` there would render "No leads yet" over
+        // a request that never reached the API, which is the worst outcome:
+        // a silent lie about an empty pipeline.
+        if (!data || !Array.isArray(data.leads)) {
+          throw new Error('/api/leads did not return lead data. Is the function deployed?');
+        }
+        if (!cancelled) setLeads(data.leads);
+      })
+      .catch((e: unknown) => {
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Could not load leads.');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [password]);
+
+  return (
+    <>
+      <h2 style={{ margin: 0, fontSize: '1.3rem', letterSpacing: '-.03em', fontWeight: 600 }}>Leads</h2>
+      <p className="dl-measure-70" style={{ margin: '10px 0 22px', fontSize: 15, color: 'var(--dl-muted)' }}>
+        Everyone who submitted <strong>Find Your First Automation</strong>. Each one also emails the notification
+        address the moment it arrives, so this page is the record, not the alert.
+      </p>
+
+      {error ? (
+        <div className="dl-notice" style={{ padding: '18px 20px', fontSize: 15, lineHeight: 1.5 }}>
+          {error}
+          <div style={{ marginTop: 8, fontSize: 14 }}>
+            This tab needs <code className="dl-code">ADMIN_PASSWORD</code> and{' '}
+            <code className="dl-code">DELAI_ADMIN_SECRET</code> set on the deployment. It does not work against{' '}
+            <code className="dl-code">vite dev</code>, which serves no functions — use{' '}
+            <code className="dl-code">vercel dev</code> or a preview deployment.
+          </div>
+        </div>
+      ) : leads === null ? (
+        <div style={{ padding: 30, color: 'var(--dl-faint)', fontSize: 15.5 }}>Loading leads…</div>
+      ) : leads.length === 0 ? (
+        <div
+          style={{
+            border: '1px dashed #c9c4b7',
+            borderRadius: 4,
+            padding: 44,
+            textAlign: 'center',
+            color: 'var(--dl-faint)',
+            fontSize: 15.5,
+          }}
+        >
+          No leads yet.
+        </div>
+      ) : (
+        <div className="dl-stack">
+          {leads.map((l) => (
+            <div key={l.id} style={{ background: 'var(--dl-panel)', padding: '20px 22px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                  <span style={{ fontWeight: 600, fontSize: 17 }}>{l.contact_name || 'Unnamed'}</span>
+                  {l.business_name ? (
+                    <span className="dl-badge" style={{ border: '1px solid var(--dl-line)', color: 'var(--dl-faint)' }}>
+                      {l.business_name}
+                    </span>
+                  ) : null}
+                  {l.status ? (
+                    <span className="dl-badge" style={{ background: '#e7e4db', color: '#5a5d54' }}>
+                      {l.status}
+                    </span>
+                  ) : null}
+                </div>
+                <span className="dl-mono dl-mono-plain" style={{ fontSize: 11.5 }}>
+                  {String(l.created_at ?? '').slice(0, 10)}
+                </span>
+              </div>
+
+              <div style={{ marginTop: 6, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+                {l.email ? (
+                  <a href={`mailto:${l.email}`} className="dl-mono dl-mono-plain" style={{ fontSize: 12.5, fontWeight: 600 }}>
+                    {l.email}
+                  </a>
+                ) : null}
+                {l.source ? (
+                  <span className="dl-mono dl-mono-plain" style={{ fontSize: 12.5 }}>
+                    via {l.source}
+                  </span>
+                ) : null}
+              </div>
+
+              {l.goal ? (
+                <p
+                  className="dl-body-m"
+                  style={{ margin: '14px 0 0', whiteSpace: 'pre-wrap', borderLeft: '2px solid var(--dl-flame)', paddingLeft: 14 }}
+                >
+                  {l.goal}
+                </p>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
 /* ------------------------------------------------------ launch checklist */
 
 const CHECKLIST = [
@@ -760,7 +897,7 @@ const CHECKLIST = [
   { tag: 'Content', title: 'Add client logos', detail: 'The homepage runs a plain "who we build for" line instead. Swap in a logo row once logos are cleared for public use.' },
   { tag: 'Engineering', title: 'Replace prototype auth', detail: 'This login is a client-side password read from VITE_ADMIN_PASSWORD. Move to Supabase, Clerk, or your identity provider with a real server-side session.' },
   { tag: 'Engineering', title: 'Move content off localStorage', detail: 'Projects live in this browser only. Point the admin at the real content store and the POST /api/portfolio/drafts endpoint.' },
-  { tag: 'Engineering', title: 'Wire the contact form to an endpoint', detail: 'It currently opens a mail client. Swap for a form handler with spam protection and a lead notification.' },
+  { tag: 'Engineering', title: 'Confirm lead email delivery', detail: 'The form posts to /api/lead, which stores the lead and emails LEAD_NOTIFY_EMAIL via Resend. Set RESEND_API_KEY on the deployment, then submit once and confirm the mail actually lands — storage succeeding does not prove sending did.' },
 ];
 
 export function ChecklistTab() {
