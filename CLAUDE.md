@@ -103,7 +103,13 @@ Env vars (Vercel project settings, never the repo) — see `.env.example`:
 | `ADMIN_PASSWORD` | server | Leads tab returns 503 |
 | `DELAI_ADMIN_SECRET` | server | Leads tab returns 503 |
 | `RESEND_API_KEY` | server | leads still stored, no email |
-| `LEAD_NOTIFY_EMAIL` / `LEAD_FROM_EMAIL` | server | defaults above; `from` must be on a Resend-verified domain |
+| `LEAD_NOTIFY_EMAIL` / `LEAD_FROM_EMAIL` | server | defaults below |
+
+**Resend: the sender domain is the trap.** DELAI has its own Resend account (key on the Hostinger box, `/opt/mastra-studio/.env` — copy it into Vercel). **`meetdelai.com` is NOT a verified sending domain on it**, so `from: hello@meetdelai.com` returns `403 validation_error` every single time. Verified domains: `thefoundai.app`, `longestash.com`, `mycloudmenu.com`, `myfluxe.com`, `mymcm.app`, `simplelenses.com`. `LEAD_FROM_EMAIL` therefore defaults to `DELAI <leads@thefoundai.app>` — an internal notification address, with `reply_to` set to the lead's own email so replying works. To send as `meetdelai.com`, verify it at resend.com/domains (DKIM/SPF) first.
+
+Two other Resend accounts exist and are **not** interchangeable with this one: **EyeGoal's** is client infrastructure (SVG-CTO AWS SSM, `*.eyegoal.org` senders) — never borrow it for DELAI; **FundScout's** is separate again (`send.pagepay.app`).
+
+**"Accepted" is not "delivered."** A `200` with an id only means Resend took it. Confirm with `GET https://api.resend.com/emails/<id>` and look for `last_event: delivered`.
 
 **`vite dev` serves no functions** — `/api/lead` and `/api/leads` 404 locally. Use `vercel dev` or a preview deployment to exercise them. `vercel.json`'s SPA rewrite is `/((?!api/).*)` precisely so `/api` is never swallowed by it.
 

@@ -897,7 +897,7 @@ const CHECKLIST = [
   { tag: 'Content', title: 'Add client logos', detail: 'The homepage runs a plain "who we build for" line instead. Swap in a logo row once logos are cleared for public use.' },
   { tag: 'Engineering', title: 'Replace prototype auth', detail: 'This login is a client-side password read from VITE_ADMIN_PASSWORD. Move to Supabase, Clerk, or your identity provider with a real server-side session.' },
   { tag: 'Engineering', title: 'Move content off localStorage', detail: 'Projects live in this browser only. Point the admin at the real content store and the POST /api/portfolio/drafts endpoint.' },
-  { tag: 'Engineering', title: 'Confirm lead email delivery', detail: 'The form posts to /api/lead, which stores the lead and emails LEAD_NOTIFY_EMAIL via Resend. Set RESEND_API_KEY on the deployment, then submit once and confirm the mail actually lands — storage succeeding does not prove sending did.' },
+  { tag: 'Engineering', title: 'Set RESEND_API_KEY on the deployment', detail: 'The form posts to /api/lead, which stores the lead and emails it. The transport is verified working; the only missing piece is the key, which lives on the DELAI Hostinger box. Note that meetdelai.com is not a verified Resend sending domain — mail goes out as leads@thefoundai.app until it is.' },
 ];
 
 export function ChecklistTab() {

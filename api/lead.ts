@@ -18,8 +18,20 @@ type Req = IncomingMessage & { method?: string; body?: unknown };
 
 const API_BASE = process.env.VITE_API_URL || 'https://api.thefoundai.app';
 const NOTIFY_TO = process.env.LEAD_NOTIFY_EMAIL || 'edeleon@meetdelai.com';
-/** Must be on a domain verified with the mail provider, or sending 403s. */
-const NOTIFY_FROM = process.env.LEAD_FROM_EMAIL || 'DELAI <hello@meetdelai.com>';
+/**
+ * MUST be on a domain verified with Resend, or every send 403s.
+ *
+ * `meetdelai.com` is NOT verified on the DELAI Resend account — verified
+ * sending domains are thefoundai.app, longestash.com, mycloudmenu.com,
+ * myfluxe.com, mymcm.app and simplelenses.com. Defaulting to a meetdelai.com
+ * sender looks obviously right and fails 100% of the time, so the default is
+ * the verified DELAI domain instead.
+ *
+ * This address only ever appears on an internal notification to the team, and
+ * reply_to is set to the lead's own address, so replying still works. Change
+ * this default only after verifying the domain at https://resend.com/domains.
+ */
+const NOTIFY_FROM = process.env.LEAD_FROM_EMAIL || 'DELAI <leads@thefoundai.app>';
 const RESEND_KEY = process.env.RESEND_API_KEY || '';
 
 interface LeadBody {
