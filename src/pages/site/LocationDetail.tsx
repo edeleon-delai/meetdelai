@@ -1,5 +1,5 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { locationBySlug, locations, services } from '../../content';
+import { locationBySlug, locations, servicesIn, verticals } from '../../content';
 import { projectHref, publishedOnly, usePortfolio } from '../../lib/portfolio';
 import { Breadcrumb, LinkStack } from '../../components/site/bits';
 import { SiteSeo } from '../../components/site/SiteSeo';
@@ -76,29 +76,42 @@ export function LocationDetail() {
           </div>
         </section>
 
+        {/* Grouped by vertical rather than a flat six, so the two-category
+            story holds on every city page too — and so the per-vertical
+            numbering reads correctly instead of 01,02,03,04,01,05. */}
         <section className="dl-sec-sm dl-alt dl-rule-t dl-rule-b">
           <div className="dl-wrap">
             <h2 className="dl-h2-sm">What we build for {location.city} businesses</h2>
-            <div className="dl-tiles dl-tiles-280" style={{ marginTop: 32 }}>
-              {services.map((s) => (
-                <Link
-                  key={s.slug}
-                  to={`/services/${s.slug}`}
-                  className="dl-card"
-                  style={{ padding: '26px 24px', minHeight: 180, gap: 10 }}
-                >
-                  <span className="dl-mono" style={{ letterSpacing: '.14em' }}>
-                    {s.num}
-                  </span>
-                  <h3 style={{ margin: '4px 0 0', fontSize: '1.22rem', letterSpacing: '-.03em', fontWeight: 600 }}>
-                    {s.title}
-                  </h3>
-                  <p className="dl-body" style={{ margin: 0, flex: 1 }}>
-                    {s.lead}
-                  </p>
-                </Link>
-              ))}
-            </div>
+            {verticals.map((v) => (
+              <div key={v.slug} style={{ marginTop: 36 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 20, flexWrap: 'wrap' }}>
+                  <div className="dl-mono dl-mono-flame">{v.name}</div>
+                  <Link to={`/services/${v.slug}`} className="dl-readmore">
+                    {v.tagline}
+                  </Link>
+                </div>
+                <div className="dl-tiles dl-tiles-280" style={{ marginTop: 16 }}>
+                  {servicesIn(v.slug).map((s) => (
+                    <Link
+                      key={s.slug}
+                      to={`/services/${s.slug}`}
+                      className="dl-card"
+                      style={{ padding: '26px 24px', minHeight: 180, gap: 10 }}
+                    >
+                      <span className="dl-mono" style={{ letterSpacing: '.14em' }}>
+                        {s.num}
+                      </span>
+                      <h3 style={{ margin: '4px 0 0', fontSize: '1.22rem', letterSpacing: '-.03em', fontWeight: 600 }}>
+                        {s.title}
+                      </h3>
+                      <p className="dl-body" style={{ margin: 0, flex: 1 }}>
+                        {s.lead}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 

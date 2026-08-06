@@ -8,7 +8,7 @@ Two design systems live here, on purpose:
 
 | Routes | Look | Owned by |
 |---|---|---|
-| `/`, `/services`, `/services/:slug`, `/work`, `/work/:slug`, `/south-florida`, `/south-florida/:slug`, `/about`, `/contact`, `/admin` | Light "DELAI redesign" (sand/flame/pine, Instrument Sans + JetBrains Mono) | `src/styles/delai.css`, scoped to `.dl-root` |
+| `/`, `/services`, `/services/<vertical>`, `/services/:slug`, `/work`, `/work/:slug`, `/south-florida`, `/south-florida/:slug`, `/about`, `/contact`, `/admin` | Light "DELAI redesign" (sand/flame/pine, Instrument Sans + JetBrains Mono) | `src/styles/delai.css`, scoped to `.dl-root` |
 | `/intelligence`, `/intelligence/:slug`, `/machine`, `/products/signal` | Original dark brutalist | `src/index.css` + the Tailwind tokens in `tailwind.config.js` |
 
 The dark pages are **not dead** — `/machine` and `llms.txt` are the agent-discoverability layer the DELAI MCP advertises, and the articles come from the API. Restyling them into the new system is open work; deleting them breaks things outside this repo.
@@ -19,8 +19,11 @@ The route table lives in **`src/marketingRoutes.tsx`** and is imported by both `
 
 **`content/site.json` is the single source of truth** for the portfolio, capability map, ICP, proof numbers, meta copy and contact details. Read it through `src/content.ts` (typed). **Never restate any of it in a component, a script, or another repo.**
 
-Three sibling files follow the same rule, read through the same module:
+It was hardcoded once, in five places across two repos. Pulling a retired product from the footer left it live in the JSON-LD, `llms.txt`, the prerendered HTML, and the DELAI MCP's `get_services`; `/machine` additionally kept asserting "6 products in production" and "founder + 6 Offers" against a site that listed none.
 
+Four sibling files follow the same rule, read through the same module:
+
+- **`content/verticals.json`** — the two things DELAI sells. See below.
 - **`content/services.json`** — the six services (copy, per-page meta, examples, deliverables, signals).
 - **`content/locations.json`** — the seven South Florida service-area pages.
 - **`content/projects.json`** — the shipped baseline for `/work` (see the admin section below).
@@ -29,7 +32,19 @@ They are separate files rather than new `site.json` keys because `site.json` is 
 
 Add a service or a city and it appears on its index page, the footer, the JSON-LD offer catalog, the sitemap and the prerender with no other edit — `src/lib/siteSeo.ts` derives all of that.
 
-It was hardcoded once, in five places across two repos. Pulling a retired product from the footer left it live in the JSON-LD, `llms.txt`, the prerendered HTML, and the DELAI MCP's `get_services`; `/machine` additionally kept asserting "6 products in production" and "founder + 6 Offers" against a site that listed none.
+### Two verticals, six services
+
+The site leads with **two categories**, not a flat service list:
+
+- **Technology Operations** — the work inside a business: data movement, workflow automation, internal tool creation, AI agents, SOP enforcement, knowledge base management, custom AI platforms ("your own ChatGPT"). Owns 5 services.
+- **Product Development** — software that ships as a product. Owns 1 service, and argues mostly through `/work`.
+
+Rules that keep this from rotting:
+
+- **A service joins a vertical via its own `vertical` key.** `verticals.json` lists no service slugs, so the two files cannot disagree.
+- **`num` is per-vertical**, assigned by position. Globally sequential numbers left a visible gap (Technology Operations read `01,02,03,04,06`) the second a service changed vertical. Anywhere services from both verticals appear together, **group them by vertical** — a mixed list renumbers to nonsense. `/south-florida/:slug` does this.
+- **Verticals share the `/services/*` namespace with services**, so a vertical slug and a service slug must never collide. Their routes are declared as literal paths in `src/marketingRoutes.tsx` (generated from content) so React Router's static-beats-dynamic ranking resolves them ahead of `/services/:slug`. Because there is no route param, `VerticalDetail` takes its slug as a **prop**.
+- A service page's breadcrumb runs `Home → What we build → <Vertical> → <Service>`, in the JSON-LD as well as the UI.
 
 Consumers — update this list if you add one:
 
@@ -42,7 +57,7 @@ Consumers — update this list if you add one:
 | `scripts/generate-llms-txt.ts` | summary, about, ICP, capabilities, products, contact |
 | `scripts/publish-site-content.ts` | emits `public/site-content.json`, syncs `index.html`'s head |
 | `src/lib/siteSeo.ts` | `contact.site` as the canonical origin; `services` → JSON-LD offer catalog; per-route title/description/breadcrumbs |
-| `src/components/site/SiteFooter.tsx` | `services`, `locations`, `contact.email` |
+| `src/components/site/SiteFooter.tsx` | `verticals` (one column each), the services under them, `locations`, `contact.email` |
 | `scripts/generate-sitemap.ts` | the marketing route list — every service and city page |
 
 `scripts/publish-site-content.ts` runs first in `prebuild` and is idempotent. It publishes `/site-content.json`, which **`mcm-agents` fetches** (`server/src/api/lib/delai-site-content.ts`) for the public MCP — so a copy change here propagates to the agent-facing surface with no deploy on that side.

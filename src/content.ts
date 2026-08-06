@@ -15,6 +15,7 @@
  * If you need a new content field, add it here, not to a component.
  */
 import raw from '../content/site.json';
+import rawVerticals from '../content/verticals.json';
 import rawServices from '../content/services.json';
 import rawLocations from '../content/locations.json';
 import rawProjects from '../content/projects.json';
@@ -103,15 +104,42 @@ export const {
  * here, and every surface derives from it.
  * ------------------------------------------------------------------ */
 
-/** One "what this looks like in practice" card on a service page. */
+/** One "what this looks like in practice" card on a service or vertical page. */
 export interface ServiceExample {
   t: string;
   d: string;
 }
 
+/**
+ * The two things DELAI sells. Every service belongs to exactly one, and the
+ * site leads with the pair: Technology Operations is the work done *inside* a
+ * business, Product Development is software that ships as a product.
+ */
+export interface Vertical {
+  /** URL segment: /services/<slug>. Shares the namespace with services, so a
+   *  vertical slug and a service slug must never collide. */
+  slug: string;
+  name: string;
+  /** Six-word positioning line, used under the name on cards. */
+  tagline: string;
+  h1: string;
+  metaTitle: string;
+  metaDesc: string;
+  lead: string;
+  /** Shorter than `lead` — for the home page's two-up band. */
+  cardBlurb: string;
+  overview: string;
+  capabilities: ServiceExample[];
+  cta: string;
+  ctaBlurb: string;
+}
+
 export interface Service {
   /** URL segment: /services/<slug>. Don't rename — it's an indexed URL. */
   slug: string;
+  /** Owning vertical's slug. The vertical file lists no services, so this
+   *  field is the only place the grouping is stated. */
+  vertical: string;
   /** Two-digit display index, e.g. "01". Ordering is the array's. */
   num: string;
   title: string;
@@ -178,10 +206,12 @@ export interface Project {
   updated: string;
 }
 
+const { _comment: _v, ...verticalsDoc } = rawVerticals as { _comment?: string; verticals: Vertical[] };
 const { _comment: _s, ...servicesDoc } = rawServices as { _comment?: string; services: Service[] };
 const { _comment: _l, ...locationsDoc } = rawLocations as { _comment?: string; locations: Location[] };
 const { _comment: _p, ...projectsDoc } = rawProjects as { _comment?: string; projects: Project[] };
 
+export const verticals: Vertical[] = verticalsDoc.verticals;
 export const services: Service[] = servicesDoc.services;
 export const locations: Location[] = locationsDoc.locations;
 
@@ -197,3 +227,14 @@ export const serviceBySlug = (slug: string): Service | undefined =>
 
 export const locationBySlug = (slug: string): Location | undefined =>
   locations.find((l) => l.slug === slug);
+
+export const verticalBySlug = (slug: string): Vertical | undefined =>
+  verticals.find((v) => v.slug === slug);
+
+/** Services belonging to a vertical, in services.json order. */
+export const servicesIn = (verticalSlug: string): Service[] =>
+  services.filter((s) => s.vertical === verticalSlug);
+
+/** The vertical a service sits under. */
+export const verticalOf = (service: Service): Vertical | undefined =>
+  verticalBySlug(service.vertical);

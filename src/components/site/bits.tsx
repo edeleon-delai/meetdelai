@@ -1,6 +1,6 @@
 /** Small presentational pieces shared across the redesigned marketing pages. */
 import { Link } from 'react-router-dom';
-import type { Project, Service } from '../../content';
+import type { Project } from '../../content';
 import { projectHref } from '../../lib/portfolio';
 
 export function Eyebrow({ children, tone = 'flame' }: { children: React.ReactNode; tone?: 'flame' | 'muted' | 'green' }) {
@@ -39,26 +39,6 @@ export function Breadcrumb({
       <span>/</span>
       <span style={{ color: 'var(--dl-ink)' }}>{current}</span>
     </nav>
-  );
-}
-
-export function ServiceCard({ service }: { service: Service }) {
-  return (
-    <Link to={`/services/${service.slug}`} className="dl-card">
-      <span
-        className="dl-mono"
-        style={{ fontSize: 11, letterSpacing: '.14em', color: 'var(--dl-faint)' }}
-      >
-        {service.num}
-      </span>
-      <h3 style={{ margin: '6px 0 0', fontSize: '1.42rem', letterSpacing: '-.035em', fontWeight: 600 }}>
-        {service.title}
-      </h3>
-      <p className="dl-body-m" style={{ margin: 0, flex: 1 }}>
-        {service.lead}
-      </p>
-      <span className="dl-readmore">Read more →</span>
-    </Link>
   );
 }
 

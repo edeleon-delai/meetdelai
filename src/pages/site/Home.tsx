@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { services } from '../../content';
+import { servicesIn, verticals } from '../../content';
 import { publishedOnly, usePortfolio } from '../../lib/portfolio';
-import { Eyebrow, FlameCta, ProjectCard, ServiceCard } from '../../components/site/bits';
+import { Eyebrow, FlameCta, ProjectCard } from '../../components/site/bits';
 import { SiteSeo } from '../../components/site/SiteSeo';
 
 /** The hero's fake-but-honest run log. Purely decorative. */
@@ -203,25 +203,97 @@ export function Home() {
           </div>
         </section>
 
-        {/* ----------------------------------------------------------- services */}
+        {/* ---------------------------------------------------------- verticals */}
         <section id="services" className="dl-sec dl-alt dl-rule-t dl-rule-b">
           <div className="dl-wrap">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 32, flexWrap: 'wrap' }}>
               <div>
                 <Eyebrow>What we build</Eyebrow>
                 <h2 className="dl-h2 dl-measure-18" style={{ marginTop: 16 }}>
-                  Six things, done properly.
+                  Two things, done properly.
                 </h2>
               </div>
               <Link to="/services" className="dl-link-rule">
                 All services →
               </Link>
             </div>
-            <div className="dl-tiles dl-tiles-300" style={{ marginTop: 40 }}>
-              {services.map((s) => (
-                <ServiceCard key={s.slug} service={s} />
-              ))}
+
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit,minmax(min(360px,100%),1fr))',
+                gap: 20,
+                marginTop: 40,
+              }}
+            >
+              {verticals.map((v, i) => {
+                const own = servicesIn(v.slug);
+                return (
+                  <div
+                    key={v.slug}
+                    style={{
+                      border: '1px solid var(--dl-line)',
+                      borderRadius: 6,
+                      background: 'var(--dl-sand)',
+                      padding: 'clamp(26px,3vw,36px)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 14,
+                    }}
+                  >
+                    <span className="dl-mono" style={{ letterSpacing: '.16em', color: 'var(--dl-flame)' }}>
+                      {`0${i + 1} · ${v.tagline}`}
+                    </span>
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontSize: 'clamp(1.6rem,2.6vw,2.2rem)',
+                        letterSpacing: '-.04em',
+                        fontWeight: 600,
+                        lineHeight: 1.05,
+                      }}
+                    >
+                      <Link to={`/services/${v.slug}`}>{v.name}</Link>
+                    </h3>
+                    <p className="dl-body-m" style={{ margin: 0 }}>
+                      {v.cardBlurb}
+                    </p>
+
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginTop: 4 }}>
+                      {v.capabilities.map((c) => (
+                        <span key={c.t} className="dl-chip" style={{ fontSize: 13.5, padding: '6px 10px' }}>
+                          {c.t}
+                        </span>
+                      ))}
+                    </div>
+
+                    {own.length > 0 && (
+                      <div style={{ display: 'grid', gap: 2, marginTop: 8, borderTop: '1px solid var(--dl-line)', paddingTop: 16 }}>
+                        {own.map((s) => (
+                          <Link
+                            key={s.slug}
+                            to={`/services/${s.slug}`}
+                            style={{ display: 'flex', gap: 12, alignItems: 'baseline', padding: '6px 0', fontSize: 15.5 }}
+                          >
+                            <span className="dl-mono" style={{ fontSize: 11, letterSpacing: '.14em' }}>
+                              {s.num}
+                            </span>
+                            <span style={{ fontWeight: 500 }}>{s.title}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+
+                    <div style={{ marginTop: 'auto', paddingTop: 16 }}>
+                      <Link to={`/services/${v.slug}`} className="dl-readmore">
+                        {v.name} in full →
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
+
             <div style={{ marginTop: 32 }}>
               <Link to="/contact" className="dl-btn dl-btn-primary dl-btn-sm">
                 Automate a Business Process →

@@ -1,5 +1,5 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { locations, serviceBySlug, services } from '../../content';
+import { locations, serviceBySlug, services, verticalOf } from '../../content';
 import { projectHref, publishedOnly, usePortfolio } from '../../lib/portfolio';
 import { Breadcrumb, Eyebrow, LinkStack } from '../../components/site/bits';
 import { SiteSeo } from '../../components/site/SiteSeo';
@@ -12,8 +12,14 @@ export function ServiceDetail() {
   // An unknown slug is a dead URL, not an empty page — send crawlers to the index.
   if (!service) return <Navigate to="/services" replace />;
 
+  const vertical = verticalOf(service);
   const related = publishedOnly(projects).slice(0, 3);
-  const others = services.filter((s) => s.slug !== service.slug).slice(0, 3);
+  // Siblings first: another service in the same vertical is a far more useful
+  // next click than whichever service happened to be defined next.
+  const others = [
+    ...services.filter((s) => s.slug !== service.slug && s.vertical === service.vertical),
+    ...services.filter((s) => s.slug !== service.slug && s.vertical !== service.vertical),
+  ].slice(0, 3);
 
   return (
     <>
@@ -21,7 +27,13 @@ export function ServiceDetail() {
       <main>
         <section style={{ padding: 'clamp(44px,6vw,80px) 0 clamp(36px,4vw,60px)' }} className="dl-rule-b">
           <div className="dl-wrap">
-            <Breadcrumb trail={[{ to: '/services', label: 'Services' }]} current={service.title} />
+            <Breadcrumb
+              trail={[
+                { to: '/services', label: 'What we build' },
+                ...(vertical ? [{ to: `/services/${vertical.slug}`, label: vertical.name }] : []),
+              ]}
+              current={service.title}
+            />
             <div
               className="dl-grid"
               style={{
@@ -32,6 +44,23 @@ export function ServiceDetail() {
               }}
             >
               <div>
+                {vertical ? (
+                  <Link
+                    to={`/services/${vertical.slug}`}
+                    className="dl-mono"
+                    style={{
+                      display: 'inline-block',
+                      color: 'var(--dl-flame)',
+                      border: '1px solid var(--dl-line)',
+                      borderRadius: 2,
+                      padding: '7px 11px',
+                      marginBottom: 20,
+                      background: 'var(--dl-panel)',
+                    }}
+                  >
+                    {vertical.name}
+                  </Link>
+                ) : null}
                 <h1 className="dl-h1-detail dl-measure-15">{service.title}</h1>
                 <p className="dl-lead dl-measure-52" style={{ margin: '24px 0 0' }}>
                   {service.lead}
@@ -144,7 +173,7 @@ export function ServiceDetail() {
               items={related.map((p) => ({ to: projectHref(p), primary: p.title, secondary: p.category }))}
             />
             <LinkStack
-              label="Other services"
+              label={vertical ? `More in ${vertical.name}` : 'Other services'}
               items={others.map((s) => ({ to: `/services/${s.slug}`, primary: s.title }))}
             />
           </div>

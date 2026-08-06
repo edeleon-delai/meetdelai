@@ -16,12 +16,16 @@ import {
   locations,
   serviceBySlug,
   services,
+  verticalBySlug,
+  verticalOf,
+  verticals,
   type Project,
 } from '../content';
 
 export type SiteRoute =
   | { name: 'home' }
   | { name: 'services' }
+  | { name: 'vertical'; slug: string }
   | { name: 'service'; slug: string }
   | { name: 'work' }
   | { name: 'project'; slug: string }
@@ -51,10 +55,16 @@ export function seoFor(route: SiteRoute, projects: Project[] = []): RouteSeo {
   switch (route.name) {
     case 'services':
       return {
-        title: 'AI Automation Services for South Florida Businesses | DELAI',
-        desc: 'Six services: AI workflow automation, business process automation, AI systems and frameworks, internal AI tools, customer-facing AI applications, and connected operational systems.',
+        title: 'What DELAI Builds — Technology Operations & Product Development',
+        desc: 'Two things: Technology Operations — data movement, workflow automation, internal tools, AI agents, SOP enforcement, knowledge bases and private AI platforms. And Product Development — the products and tools we design, build and operate.',
         path: '/services',
       };
+    case 'vertical': {
+      const v = verticalBySlug(route.slug);
+      return v
+        ? { title: v.metaTitle, desc: v.metaDesc, path: `/services/${v.slug}` }
+        : DEFAULT_SEO;
+    }
     case 'service': {
       const s = serviceBySlug(route.slug);
       return s
@@ -161,12 +171,17 @@ export function buildJsonLd(
       },
     ],
     knowsAbout: [
+      'Technology operations',
+      'Product development',
       'AI workflow automation',
       'Business process automation',
-      'AI systems and frameworks',
+      'Data movement and system integration',
       'Internal AI tools',
+      'AI agents',
+      'SOP enforcement',
+      'Knowledge base management',
+      'Custom AI platforms',
       'Customer-facing AI applications',
-      'System integration',
     ],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
@@ -196,7 +211,16 @@ export function buildJsonLd(
   ];
 
   const crumbs: Array<{ name: string; path: string }> = [{ name: 'Home', path: '/' }];
-  if (route.name === 'service' || route.name === 'services') crumbs.push({ name: 'Services', path: '/services' });
+  if (route.name === 'service' || route.name === 'services' || route.name === 'vertical') {
+    crumbs.push({ name: 'What we build', path: '/services' });
+  }
+  // A service page's trail runs through its vertical, so the two-category
+  // structure is visible to a crawler and not only in the nav.
+  if (route.name === 'service') {
+    const sv = serviceBySlug(route.slug);
+    const v = sv ? verticalOf(sv) : undefined;
+    if (v) crumbs.push({ name: v.name, path: `/services/${v.slug}` });
+  }
   if (route.name === 'project' || route.name === 'work') crumbs.push({ name: 'Work', path: '/work' });
   if (route.name === 'location' || route.name === 'areas') crumbs.push({ name: 'South Florida', path: '/south-florida' });
   if (seo.path !== '/' && crumbs[crumbs.length - 1].path !== seo.path) {
@@ -212,6 +236,36 @@ export function buildJsonLd(
         item: base + c.path,
       })),
     });
+  }
+
+  if (route.name === 'vertical') {
+    const v = verticalBySlug(route.slug);
+    if (v) {
+      graph.push({
+        '@type': 'Service',
+        name: v.name,
+        serviceType: v.name,
+        description: v.metaDesc,
+        provider: { '@id': `${base}/#organization` },
+        areaServed,
+        url: `${base}/services/${v.slug}`,
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: v.name,
+          itemListElement: services
+            .filter((x) => x.vertical === v.slug)
+            .map((x) => ({
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: x.title,
+                description: x.lead,
+                url: `${base}/services/${x.slug}`,
+              },
+            })),
+        },
+      });
+    }
   }
 
   if (route.name === 'service') {
@@ -266,6 +320,7 @@ export function marketingRoutes(projects: Project[]): SiteRoute[] {
   return [
     { name: 'home' },
     { name: 'services' },
+    ...verticals.map((v): SiteRoute => ({ name: 'vertical', slug: v.slug })),
     ...services.map((s): SiteRoute => ({ name: 'service', slug: s.slug })),
     { name: 'work' },
     ...projects

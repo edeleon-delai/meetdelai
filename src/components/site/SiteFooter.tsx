@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { contact, locations, services } from '../../content';
+import { contact, locations, servicesIn, verticals } from '../../content';
 
 export function SiteFooter() {
   return (
@@ -30,13 +30,21 @@ export function SiteFooter() {
             <div style={{ marginTop: 10, fontSize: 14.5 }}>Mon–Fri, 9:00–18:00 ET</div>
           </div>
 
-          <FooterColumn title="Services">
-            {services.map((s) => (
-              <Link key={s.slug} to={`/services/${s.slug}`}>
-                {s.title}
+          {/* Grouped by vertical, so the footer tells the same two-category
+              story as the nav rather than a flat list of six. */}
+          {verticals.map((v) => (
+            <FooterColumn key={v.slug} title={v.name}>
+              <Link to={`/services/${v.slug}`} style={{ color: 'var(--dl-sand)', fontWeight: 600 }}>
+                {v.name} overview
               </Link>
-            ))}
-          </FooterColumn>
+              {servicesIn(v.slug).map((s) => (
+                <Link key={s.slug} to={`/services/${s.slug}`}>
+                  {s.title}
+                </Link>
+              ))}
+              {v.slug === 'product-development' ? <Link to="/work">Case studies</Link> : null}
+            </FooterColumn>
+          ))}
 
           <FooterColumn title="Service areas">
             {locations.map((l) => (

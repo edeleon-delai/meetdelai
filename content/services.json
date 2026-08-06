@@ -3,6 +3,7 @@
   "services": [
     {
       "slug": "ai-workflow-automation",
+      "vertical": "technology-operations",
       "num": "01",
       "title": "AI Workflow Automation",
       "lead": "One focused flow of requests, decisions, routing, follow-ups, and system updates, running without anyone watching an inbox.",
@@ -10,10 +11,22 @@
       "metaDesc": "DELAI builds AI workflow automation for small and medium businesses in Miami, Fort Lauderdale, and Palm Beach County. Intake, triage, routing, and follow-up that runs itself.",
       "overview": "Most operational work is a queue. Something arrives, a person reads it, decides what it is, does three things in three different systems, and tries to remember to check back. We build that loop as software — AI does the reading and the deciding, your team handles the exceptions.",
       "examples": [
-        { "t": "Maintenance and service intake", "d": "Email, form, text, or voicemail becomes a classified, prioritized, assigned work order with the customer already notified." },
-        { "t": "Document and invoice processing", "d": "Line items extracted, matched against the PO or the lease, flagged when they disagree, posted when they don't." },
-        { "t": "Follow-up and escalation", "d": "Nothing sits. The system chases vendors, customers, and internal owners on a schedule and escalates on age." },
-        { "t": "Shared inbox triage", "d": "An inbox that sorts itself: routed by topic, drafted replies for the routine sixty percent, humans on the rest." }
+        {
+          "t": "Maintenance and service intake",
+          "d": "Email, form, text, or voicemail becomes a classified, prioritized, assigned work order with the customer already notified."
+        },
+        {
+          "t": "Document and invoice processing",
+          "d": "Line items extracted, matched against the PO or the lease, flagged when they disagree, posted when they don't."
+        },
+        {
+          "t": "Follow-up and escalation",
+          "d": "Nothing sits. The system chases vendors, customers, and internal owners on a schedule and escalates on age."
+        },
+        {
+          "t": "Shared inbox triage",
+          "d": "An inbox that sorts itself: routed by topic, drafted replies for the routine sixty percent, humans on the rest."
+        }
       ],
       "deliverables": [
         "A mapped workflow with every decision point named",
@@ -30,6 +43,7 @@
     },
     {
       "slug": "business-process-automation",
+      "vertical": "technology-operations",
       "num": "02",
       "title": "Business Process Automation",
       "lead": "A larger end-to-end process redesigned across teams, steps, approvals, and systems — so the handoffs stop breaking.",
@@ -37,10 +51,22 @@
       "metaDesc": "Business process automation for South Florida companies. DELAI rebuilds onboarding, close, approvals, and renewals as one connected operational flow.",
       "overview": "Some work isn't one task, it's fourteen — spread across five tools and three people, with a spreadsheet holding it together. Automating the pieces in isolation doesn't help. We rebuild the whole process as a single operational flow.",
       "examples": [
-        { "t": "Onboarding", "d": "New client, new tenant, new employee: documents collected, accounts created, systems provisioned, checklist tracked to completion." },
-        { "t": "Month-end close", "d": "Data pulled, reconciled, exceptions surfaced, owner and investor reports assembled and sent on the same day every month." },
-        { "t": "Approvals and compliance", "d": "Thresholds, sign-offs, and audit trails enforced by the system instead of by memory." },
-        { "t": "Renewals and recurring cycles", "d": "Anything that happens every month or every year, running on its own calendar without a reminder from a person." }
+        {
+          "t": "Onboarding",
+          "d": "New client, new tenant, new employee: documents collected, accounts created, systems provisioned, checklist tracked to completion."
+        },
+        {
+          "t": "Month-end close",
+          "d": "Data pulled, reconciled, exceptions surfaced, owner and investor reports assembled and sent on the same day every month."
+        },
+        {
+          "t": "Approvals and compliance",
+          "d": "Thresholds, sign-offs, and audit trails enforced by the system instead of by memory."
+        },
+        {
+          "t": "Renewals and recurring cycles",
+          "d": "Anything that happens every month or every year, running on its own calendar without a reminder from a person."
+        }
       ],
       "deliverables": [
         "A process map your team agrees is accurate",
@@ -57,33 +83,53 @@
     },
     {
       "slug": "ai-systems-frameworks",
+      "vertical": "technology-operations",
       "num": "03",
       "title": "AI Systems & Frameworks",
-      "lead": "The shared AI foundation: knowledge, permissions, agents, evaluation, governance, and monitoring.",
-      "metaTitle": "AI Systems & Frameworks | AI Consulting in South Florida | DELAI",
-      "metaDesc": "DELAI builds the shared AI foundation — knowledge architecture, agent frameworks, evaluation, and governance — for businesses across Miami and Broward County.",
+      "lead": "The shared AI foundation: knowledge, permissions, agents, evaluation, governance, and a private AI platform your team can actually log into.",
+      "metaTitle": "AI Systems, Agents & Custom AI Platforms | DELAI South Florida",
+      "metaDesc": "DELAI builds the shared AI foundation — knowledge architecture, agent frameworks, evaluation, governance, and custom AI platforms (your own private ChatGPT) — for businesses across Miami and Broward County.",
       "overview": "The second and third AI project is where most companies get into trouble: three assistants, three sets of rules, and no idea what any of them are actually allowed to do. We build the shared layer first, so everything after it is faster and safer.",
       "examples": [
-        { "t": "Knowledge architecture", "d": "Your documents, policies, and records made retrievable and current, with answers that cite their source." },
-        { "t": "Agent and tool frameworks", "d": "A defined set of actions AI is permitted to take, with limits, and every call logged." },
-        { "t": "Evaluation", "d": "Test sets and scoring, so you know whether a change made things better or worse before it ships." },
-        { "t": "Governance", "d": "Who can use what, on which data, with which approvals — enforced in code, not written in a policy doc." }
+        {
+          "t": "Knowledge architecture",
+          "d": "Your documents, policies, and records made retrievable and current, with answers that cite their source."
+        },
+        {
+          "t": "Agent and tool frameworks",
+          "d": "A defined set of actions AI is permitted to take, with limits, and every call logged."
+        },
+        {
+          "t": "Evaluation",
+          "d": "Test sets and scoring, so you know whether a change made things better or worse before it ships."
+        },
+        {
+          "t": "Governance",
+          "d": "Who can use what, on which data, with which approvals — enforced in code, not written in a policy doc."
+        },
+        {
+          "t": "Your own ChatGPT",
+          "d": "A private AI platform for your team: it knows your business, runs on your data, and enforces your rules about who is allowed to ask what. Nothing leaves, and nothing is trained on you."
+        }
       ],
       "deliverables": [
         "A reference architecture specific to your business",
         "Shared knowledge and retrieval layer",
         "Permission and approval model",
-        "Evaluation harness and production monitoring"
+        "Evaluation harness and production monitoring",
+        "A private, branded AI platform your team signs into"
       ],
       "signals": [
         "You have three AI pilots and no shared plan",
         "Nobody can say what the AI is allowed to do",
-        "Data access questions keep stalling projects"
+        "Data access questions keep stalling projects",
+        "Your team is pasting company information into a public chatbot"
       ],
       "cta": "Discuss Your AI System"
     },
     {
       "slug": "internal-ai-tools",
+      "vertical": "technology-operations",
       "num": "04",
       "title": "Internal AI Tools",
       "lead": "Focused applications that help your team finish specific operational work faster — one screen for the job they do fifty times a day.",
@@ -91,10 +137,22 @@
       "metaDesc": "Custom internal AI tools for South Florida businesses — review queues, quoting screens, ops consoles. Built by DELAI in Miami and Fort Lauderdale.",
       "overview": "Not another dashboard. A tool that does the specific thing — the review queue, the quoting screen, the reconciliation view — with AI reading, drafting, and pre-filling so the person is deciding instead of typing.",
       "examples": [
-        { "t": "Review and approval queues", "d": "AI drafts, a human approves, and the approval itself is the action that moves the work forward." },
-        { "t": "Quoting and estimating", "d": "Pull the history, price the job, generate the document, send it — in one screen." },
-        { "t": "Search across everything", "d": "One box across leases, tickets, emails, and files, with answers that cite the document they came from." },
-        { "t": "Operations consoles", "d": "The five things a coordinator needs, on one screen, instead of six browser tabs and a group chat." }
+        {
+          "t": "Review and approval queues",
+          "d": "AI drafts, a human approves, and the approval itself is the action that moves the work forward."
+        },
+        {
+          "t": "Quoting and estimating",
+          "d": "Pull the history, price the job, generate the document, send it — in one screen."
+        },
+        {
+          "t": "Search across everything",
+          "d": "One box across leases, tickets, emails, and files, with answers that cite the document they came from."
+        },
+        {
+          "t": "Operations consoles",
+          "d": "The five things a coordinator needs, on one screen, instead of six browser tabs and a group chat."
+        }
       ],
       "deliverables": [
         "A working internal application, deployed",
@@ -111,17 +169,30 @@
     },
     {
       "slug": "customer-ai-applications",
-      "num": "05",
+      "vertical": "product-development",
+      "num": "01",
       "title": "Customer-Facing AI Applications",
       "lead": "Portals, assistants, and self-service experiences your customers use directly — and that hold up.",
       "metaTitle": "Customer-Facing AI Applications | AI Development in Miami | DELAI",
       "metaDesc": "DELAI designs and builds customer-facing AI applications — portals, support assistants, and intake flows — for small and medium businesses in South Florida.",
       "overview": "Customer-facing AI has a higher bar: it has to be right, it has to know when to hand off, and it has to sound like you. We build the ones that reduce inbound volume instead of generating angry follow-ups.",
       "examples": [
-        { "t": "Self-serve portals", "d": "Customers get status, documents, and answers without opening a ticket or calling the office." },
-        { "t": "Support assistants with real handoff", "d": "Answers what it knows, escalates everything else cleanly, with full context attached." },
-        { "t": "Intake and qualification", "d": "Prospects and requests captured, qualified, and routed the moment they arrive — including at 11pm." },
-        { "t": "Customer-facing products", "d": "Software you sell, not only software you run internally." }
+        {
+          "t": "Self-serve portals",
+          "d": "Customers get status, documents, and answers without opening a ticket or calling the office."
+        },
+        {
+          "t": "Support assistants with real handoff",
+          "d": "Answers what it knows, escalates everything else cleanly, with full context attached."
+        },
+        {
+          "t": "Intake and qualification",
+          "d": "Prospects and requests captured, qualified, and routed the moment they arrive — including at 11pm."
+        },
+        {
+          "t": "Customer-facing products",
+          "d": "Software you sell, not only software you run internally."
+        }
       ],
       "deliverables": [
         "A production application under your brand",
@@ -138,17 +209,30 @@
     },
     {
       "slug": "connected-operational-systems",
-      "num": "06",
+      "vertical": "technology-operations",
+      "num": "05",
       "title": "Connected Operational Systems",
       "lead": "CRM, accounting, ticketing, inventory, and spreadsheets connected so information and actions actually move between them.",
       "metaTitle": "System Integration & Connected Operations | DELAI South Florida",
       "metaDesc": "DELAI connects the systems South Florida businesses already run — CRM, accounting, ticketing — into one operational layer with a real source of truth.",
       "overview": "Most 'AI problems' are integration problems wearing a costume. If the data lives in four places and none of them agree, no model fixes that. We connect the systems, settle which one is authoritative, and keep them in sync.",
       "examples": [
-        { "t": "System integration", "d": "Two-way sync between the tools you already pay for, with conflict rules that match how you actually operate." },
-        { "t": "Data unification", "d": "One customer record, one property record, one source of truth — and a documented reason why." },
-        { "t": "Reporting that reconciles", "d": "Numbers that match across systems because they're coming from the same place." },
-        { "t": "Legacy bridges", "d": "The old system nobody is replacing this year, connected to everything else anyway." }
+        {
+          "t": "System integration",
+          "d": "Two-way sync between the tools you already pay for, with conflict rules that match how you actually operate."
+        },
+        {
+          "t": "Data unification",
+          "d": "One customer record, one property record, one source of truth — and a documented reason why."
+        },
+        {
+          "t": "Reporting that reconciles",
+          "d": "Numbers that match across systems because they're coming from the same place."
+        },
+        {
+          "t": "Legacy bridges",
+          "d": "The old system nobody is replacing this year, connected to everything else anyway."
+        }
       ],
       "deliverables": [
         "Integration layer between your core systems",
