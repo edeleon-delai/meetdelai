@@ -1,0 +1,47 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for the two DELAI verticals. Read via src/content.ts (typed). Consumed by the home 'two things we do' band, /services, the two vertical landing pages, service-page breadcrumbs and badges, the footer, JSON-LD, the sitemap and the prerenderer. A service joins a vertical by its `vertical` key in services.json — this file lists no service slugs, so the two can never disagree.",
+  "verticals": [
+    {
+      "slug": "technology-operations",
+      "name": "Technology Operations",
+      "tagline": "The systems that run the work.",
+      "h1": "Technology Operations",
+      "metaTitle": "Technology Operations — AI Automation & Internal Systems | DELAI",
+      "metaDesc": "DELAI builds the operational layer for South Florida businesses: data movement, workflow automation, internal tools, AI agents, SOP enforcement, knowledge base management, and private AI platforms.",
+      "lead": "Data moving between systems that never talked. Decisions routed without anyone watching an inbox. SOPs enforced by software instead of by memory.",
+      "cardBlurb": "Everything that happens inside your business, rebuilt as software that runs on its own.",
+      "overview": "Most of what a company calls \"the process\" is a person moving information between systems that don't talk to each other, applying rules that live in somebody's head. It works until that person is on vacation. Technology Operations is the work of turning that into software — and then staying to run it.",
+      "capabilities": [
+        { "t": "Data movement", "d": "One customer record, one job record, moving between the tools you already pay for — without a CSV export in the middle and without two systems disagreeing about the truth." },
+        { "t": "Workflow automation", "d": "Intake, classification, routing, follow-up and escalation, running on their own. Your team handles the exceptions instead of the queue." },
+        { "t": "Internal tool creation", "d": "One screen for the job somebody does fifty times a day, instead of six browser tabs, a spreadsheet, and a group chat." },
+        { "t": "AI agents", "d": "A defined set of actions AI is permitted to take, with limits it cannot exceed, and every call logged. Useful because it is bounded, not despite it." },
+        { "t": "SOP enforcement", "d": "Thresholds, approvals and sequence enforced by the system. The procedure stops being a document nobody opens and becomes how the work actually moves." },
+        { "t": "Knowledge base management", "d": "Your documents, policies and records made retrievable and current, with answers that cite the source they came from." },
+        { "t": "Custom AI platforms", "d": "Your own ChatGPT: a private assistant that knows your business, runs on your data, and enforces your rules about who is allowed to ask what." }
+      ],
+      "cta": "Find Your First Automation",
+      "ctaBlurb": "Tell us the process your team runs by hand. We'll tell you whether it's worth automating — and if it isn't, we'll say so."
+    },
+    {
+      "slug": "product-development",
+      "name": "Product Development",
+      "tagline": "Software you sell, not only software you run.",
+      "h1": "Product Development",
+      "metaTitle": "Product Development — AI Product Design & Build | DELAI South Florida",
+      "metaDesc": "DELAI designs, builds and operates AI products end to end — customer-facing applications, portals and platforms. See PAGE, Alba and EyeGoal.",
+      "lead": "The products and tools we've created — designed, built, shipped, and still running. Ours, and our clients'.",
+      "cardBlurb": "Products with users, a roadmap and an owner — built end to end and operated after launch.",
+      "overview": "Operations work makes an existing business cheaper to run. Product work creates something that wasn't there before — with users, a roadmap, and somebody accountable at 2am. We do both, and the second is where the first came from: everything in our portfolio is something we designed, built, shipped, and still operate.",
+      "capabilities": [
+        { "t": "Product definition", "d": "What it is, who it's for, and the smallest version that's genuinely useful. Most products die from being too broad on day one." },
+        { "t": "Customer-facing applications", "d": "Portals, assistants and self-service flows your customers touch directly — which means a higher bar for being right and knowing when to hand off." },
+        { "t": "Platforms and operating systems", "d": "Multi-tenant software where several kinds of user work on the same record without stepping on each other." },
+        { "t": "Phone-first experiences", "d": "Built for the person holding a phone in a hallway, not the person at a desk with two monitors." },
+        { "t": "Shipping and operating", "d": "We stay after launch. Monitoring, iteration, and the unglamorous work of making a v1 into something people keep using." }
+      ],
+      "cta": "Discuss Your AI System",
+      "ctaBlurb": "Have something to build? Tell us what it is and who it's for. We'll tell you what the first version should be."
+    }
+  ]
+}
