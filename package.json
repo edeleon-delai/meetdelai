@@ -13,7 +13,8 @@
     "llms": "tsx scripts/generate-llms-txt.ts",
     "prerender": "tsx --tsconfig tsconfig.app.json scripts/prerender.tsx",
     "preview": "vite preview --host",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "vitest run"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
@@ -34,6 +35,7 @@
     "tailwindcss": "^3.4.17",
     "tsx": "^4.21.0",
     "typescript": "^5.9.2",
-    "vite": "^7.1.2"
+    "vite": "^7.1.2",
+    "vitest": "^3.2.7"
   }
 }
