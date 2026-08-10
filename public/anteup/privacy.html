@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AnteUp — Privacy Policy</title>
+<style>
+  :root { color-scheme: dark; }
+  body {
+    margin: 0 auto; max-width: 44rem; padding: 3rem 1.5rem 6rem;
+    background: #0c0b0a; color: rgba(250,248,244,0.82);
+    font: 400 17px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  h1 { color: #faf8f4; font-size: 2rem; letter-spacing: -0.02em; margin: 0 0 .35rem; }
+  h2 { color: #faf8f4; font-size: 1.15rem; margin: 2.6rem 0 .7rem; letter-spacing: -0.01em; }
+  h3 { color: #faf8f4; font-size: 1rem; margin: 1.6rem 0 .4rem; }
+  .meta { color: rgba(250,248,244,0.45); font-size: .9rem; margin: 0 0 2rem; }
+  a { color: #E8993A; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .95rem; display: block; overflow-x: auto; }
+  th, td { text-align: left; padding: .6rem .8rem; border-bottom: 1px solid rgba(250,248,244,0.12); vertical-align: top; }
+  th { color: #faf8f4; font-weight: 600; white-space: nowrap; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; color: rgba(250,248,244,0.7); }
+  .callout { border-left: 2px solid #E8993A; padding: .1rem 0 .1rem 1rem; margin: 1.4rem 0; color: rgba(250,248,244,0.9); }
+  ul { padding-left: 1.2rem; }
+  li { margin: .35rem 0; }
+</style>
+</head>
+<body>
+
+<h1>AnteUp Privacy Policy</h1>
+<p class="meta">Last updated 10 August 2026</p>
+
+<p>AnteUp is made by DELAI. This policy explains what the app collects, why, where it goes, and how to get rid of it. It covers the AnteUp iOS app and its backend.</p>
+
+<div class="callout">
+  <strong>The short version.</strong> We store the account you sign in with, the Antes you place and how they turn out, and the health figures that settle them. Your Screen Time app selections never leave your phone. We never sell your data, and health data is never used for advertising or shared with advertisers.
+</div>
+
+<h2>1. What we collect</h2>
+
+<h3>Account</h3>
+<table>
+  <tr><th>Data</th><th>Why</th></tr>
+  <tr><td>Email address</td><td>To identify your account and send sign-in and password-reset mail.</td></tr>
+  <tr><td>Password</td><td>Stored only as a salted hash by our authentication provider. We never see it.</td></tr>
+  <tr><td>Apple account identifier</td><td>If you use Sign in with Apple. If you choose Apple's private relay we never receive your real address.</td></tr>
+</table>
+
+<h3>Profile, which you enter yourself</h3>
+<p>Display name, age range, time zone, the hour your day starts, your daily reminder time, your default Ante length, and whether you have granted health access. Every one of these is optional except the time zone, which the app needs to know when your day ends.</p>
+
+<h3>Your Antes</h3>
+<p>Each Ante you place: the activity, the length, the app you staked, when it started, and whether it was won, folded or missed. From those we derive Last 1000, Ante Won, Minutes Earned and Decision Win %. We keep an append-only record of these events, which is how the numbers are calculated rather than stored.</p>
+
+<h3>Health data</h3>
+<p>If you grant access, AnteUp reads four things from Apple Health, and only to settle an Ante you set for yourself:</p>
+<ul>
+  <li>Step count</li>
+  <li>Walking distance</li>
+  <li>Workout minutes</li>
+  <li>Sleep minutes</li>
+</ul>
+<p>The reading relevant to an Ante is stored on our server so the result can be verified and cannot be altered on the phone. AnteUp never writes anything to Apple Health. iOS requires us to declare write access because of how the app links HealthKit; we do not use it.</p>
+
+<div class="callout">
+  Health data is <strong>never</strong> used for advertising, never used to build a profile of you, and never shared with advertisers, data brokers or any third party. This is both our policy and an Apple App Store requirement.
+</div>
+
+<h3>Screen Time selections</h3>
+<p>When you choose which apps to shield, iOS hands the app an opaque token rather than the name of the app. Those tokens stay on your device, inside a private container, and are never transmitted to us. What we do store is the brand you picked from our list, for example <code>instagram</code>, so we can name it back to you on screen. If you pick an app that is not on our list, we store only the word "Other".</p>
+
+<h3>Motion</h3>
+<p>For a Walk Ante the app may read motion data from your device to confirm the walk. This is processed on the device.</p>
+
+<h3>Purchases</h3>
+<p>If you subscribe, our payments provider tells us that your subscription started, renewed, lapsed or was refunded, and which product it was. <strong>We never receive your card details.</strong> Apple handles the payment; we only learn the outcome.</p>
+
+<h3>Advertising</h3>
+<p>Free accounts see at most one full-screen ad per completed Ante, shown after you tap Collect Reward. Ads are served by Google AdMob, which may use your device's advertising identifier. If you decline App Tracking Transparency, or never answer it, we ask AdMob for non-personalised ads only.</p>
+<p>We record that an ad was shown, tied to the Ante it followed. We do not record anything about the ad's content.</p>
+
+<h3>What we do not collect</h3>
+<ul>
+  <li>Your location</li>
+  <li>Your contacts, photos, calendar or microphone</li>
+  <li>Which apps you actually opened, or for how long</li>
+  <li>Any content from the apps you shield</li>
+  <li>Push notification tokens. Every AnteUp notification is scheduled locally on your device.</li>
+</ul>
+
+<h2>2. Who we share it with</h2>
+
+<p>We do not sell your data, and we do not share it for anyone else's advertising. We use these processors:</p>
+
+<table>
+  <tr><th>Who</th><th>What they get</th><th>Why</th></tr>
+  <tr><td>Supabase</td><td>Everything listed above that is stored on a server</td><td>Database, authentication and backend hosting</td></tr>
+  <tr><td>Apple</td><td>Your Apple account identifier, purchase and health authorisations</td><td>Sign in with Apple, App Store purchases, HealthKit</td></tr>
+  <tr><td>RevenueCat</td><td>Your account identifier and subscription status</td><td>To know whether your subscription is active</td></tr>
+  <tr><td>Google AdMob</td><td>Device advertising identifier, subject to your tracking choice</td><td>To serve the interstitial ad on free accounts. Never health data.</td></tr>
+  <tr><td>Expo</td><td>No personal data</td><td>To deliver app updates</td></tr>
+</table>
+
+<p>We will also disclose data if the law requires it, or to investigate fraud or abuse of the service.</p>
+
+<h2>3. Where it is stored</h2>
+
+<p>Our database is hosted on infrastructure operated by Supabase and is shared with other DELAI products. AnteUp's data is separated within it and access is restricted per account by row-level security, so one account cannot read another's rows. Data may be processed in the United States and other countries where our providers operate.</p>
+
+<h2>4. How long we keep it</h2>
+
+<ul>
+  <li><strong>While your account exists:</strong> your Antes and decisions are kept, because the Last 1000 window is the product.</li>
+  <li><strong>When you delete your account:</strong> your AnteUp profile, Antes, decisions, events, health readings and stakes are deleted immediately and permanently. There is no copy and no undo.</li>
+  <li><strong>Billing records</strong> may be retained where we are required to keep them for tax or accounting purposes, and to handle refunds and disputes.</li>
+</ul>
+
+<h2>5. Your choices and rights</h2>
+
+<ul>
+  <li><strong>Health access</strong> can be turned off at any time in the app or in the iOS Health app. Turning it off stops new readings.</li>
+  <li><strong>Tracking</strong> can be refused when asked, or changed later in iOS Settings → Privacy &amp; Security → Tracking.</li>
+  <li><strong>Notifications</strong> can be turned off in iOS Settings, or set to none in the app.</li>
+  <li><strong>Access, correction and export.</strong> Most of your data is visible in the app. Write to us for a copy or a correction.</li>
+  <li><strong>Deletion.</strong> Delete everything from within the app, or write to us. Deleting your AnteUp account does not close any other DELAI account you hold.</li>
+</ul>
+
+<p>Depending on where you live you may have additional rights under the GDPR, the UK GDPR or US state privacy laws, including the right to object to processing and to lodge a complaint with your data protection authority. Our lawful bases are performance of a contract (running the app you signed up for), consent (health data and tracking), and legitimate interests (security and fraud prevention).</p>
+
+<h2>6. Children</h2>
+
+<p>AnteUp is not directed at children under 13, and we do not knowingly collect their data. The age range field is optional and self-reported. If you believe a child has given us data, write to us and we will delete it.</p>
+
+<h2>7. Security</h2>
+
+<p>Traffic is encrypted in transit. Passwords are stored only as hashes. Access to a row is restricted to the account that owns it, enforced by the database rather than by the app. No system is perfectly secure, and we do not claim otherwise.</p>
+
+<h2>8. Changes</h2>
+
+<p>If we change this policy we will update the date at the top, and we will tell you in the app if the change is material.</p>
+
+<h2>9. Contact</h2>
+
+<p>Questions, requests or complaints: <a href="mailto:support@meetdelai.com">support@meetdelai.com</a>.</p>
+
+</body>
+</html>
