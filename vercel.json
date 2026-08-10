@@ -1,5 +1,7 @@
 {
   "rewrites": [
+    { "source": "/anteup/terms", "destination": "/anteup/terms.html" },
+    { "source": "/anteup/privacy", "destination": "/anteup/privacy.html" },
     { "source": "/((?!api/).*)", "destination": "/" }
   ]
 }
