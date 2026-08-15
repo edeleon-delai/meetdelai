@@ -45,9 +45,9 @@ export function Admin() {
 
   const [authed, setAuthed] = useState(false);
   const [pw, setPw] = useState('');
-  // Held in memory only (never persisted) so the Leads tab can authenticate to
-  // /api/leads, which checks it server-side.
-  const [sessionPw, setSessionPw] = useState('');
+  // Deliberately not kept after sign-in. This value is compiled into a public
+  // bundle, so it must never be sent anywhere — the Leads tab collects its own
+  // server-side password instead. See ./leadsAuth.ts.
   const [authError, setAuthError] = useState('');
   const [tab, setTab] = useState<Tab>('overview');
   const [editing, setEditing] = useState<Project | null>(null);
@@ -201,7 +201,6 @@ export function Admin() {
                 if (pw === ADMIN_PASSWORD) {
                   setAuthed(true);
                   setAuthError('');
-                  setSessionPw(pw);
                   setPw('');
                   setTab('overview');
                 } else {
@@ -272,8 +271,9 @@ export function Admin() {
               <button
                 type="button"
                 onClick={() => {
+                  // Signing out unmounts LeadsTab, which discards the leads
+                  // password with it — it lives in that component's state only.
                   setAuthed(false);
-                  setSessionPw('');
                   setTab('overview');
                   setEditing(null);
                 }}
@@ -362,7 +362,7 @@ export function Admin() {
                 />
               )}
 
-              {tab === 'leads' && <LeadsTab password={sessionPw} />}
+              {tab === 'leads' && <LeadsTab />}
 
               {tab === 'api' && <ApiTab />}
               {tab === 'settings' && <ChecklistTab />}

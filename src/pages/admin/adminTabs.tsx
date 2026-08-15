@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { Project, ProjectStatus } from '../../content';
 import type { QueueItem } from '../../lib/portfolio';
 import { fileToCoverDataUrl } from '../../lib/image';
+import { loadLeads } from './leadsAuth';
 
 /* ------------------------------------------------------------- overview */
 
@@ -767,39 +768,84 @@ export interface Lead {
 
 /**
  * Reads through the same-origin /api/leads function, which holds the DELAI
- * admin secret server-side. The browser never sees it — the only thing sent
- * from here is the admin password, which that function checks against an env
- * var rather than against anything compiled into this bundle.
+ * admin secret server-side. The browser never sees it.
+ *
+ * This tab collects its own password rather than reusing the one from the
+ * sign-in screen. That password is compiled into a public bundle; reusing it
+ * would force ADMIN_PASSWORD to hold the same published string and hand the
+ * lead table to anyone who reads the JS. See ./leadsAuth.ts.
+ *
+ * The password is held in component state only — never localStorage, never a
+ * prop from the parent — so closing the tab forgets it.
  */
-export function LeadsTab({ password }: { password: string }) {
+export function LeadsTab() {
+  const [password, setPassword] = useState('');
+  const [pw, setPw] = useState('');
   const [leads, setLeads] = useState<Lead[] | null>(null);
   const [error, setError] = useState('');
+  const [locked, setLocked] = useState(true);
 
   useEffect(() => {
+    if (!password) return;
     let cancelled = false;
     setError('');
     setLeads(null);
-    fetch('/api/leads', { headers: { 'x-admin-password': password } })
-      .then(async (r) => {
-        const data = (await r.json().catch(() => null)) as { leads?: Lead[]; error?: string } | null;
-        if (!r.ok) throw new Error(data?.error || `Request failed (${r.status})`);
-        // A 200 that isn't the expected JSON means the function did not answer
-        // — under `vite dev` the SPA fallback returns index.html with status
-        // 200. Falling through to `[]` there would render "No leads yet" over
-        // a request that never reached the API, which is the worst outcome:
-        // a silent lie about an empty pipeline.
-        if (!data || !Array.isArray(data.leads)) {
-          throw new Error('/api/leads did not return lead data. Is the function deployed?');
+    loadLeads(password, fetch).then((r) => {
+      if (cancelled) return;
+      if (r.ok) {
+        setLeads(r.leads);
+        setLocked(false);
+      } else {
+        setError(r.error);
+        // A rejected password goes back to the prompt; anything else is a
+        // deployment problem the prompt cannot fix, so leave the error up.
+        if (r.unauthorized) {
+          setPassword('');
+          setLocked(true);
+        } else {
+          setLocked(false);
         }
-        if (!cancelled) setLeads(data.leads);
-      })
-      .catch((e: unknown) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : 'Could not load leads.');
-      });
+      }
+    });
     return () => {
       cancelled = true;
     };
   }, [password]);
+
+  if (locked) {
+    return (
+      <>
+        <h2 style={{ margin: 0, fontSize: '1.3rem', letterSpacing: '-.03em', fontWeight: 600 }}>Leads</h2>
+        <p className="dl-measure-70" style={{ margin: '10px 0 22px', fontSize: 15, color: 'var(--dl-muted)' }}>
+          Leads are real contact details, so they sit behind a server-side check rather than the sign-in password.
+          Enter <code className="dl-code">ADMIN_PASSWORD</code> from the deployment — it is deliberately not the
+          password you signed in with.
+        </p>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setPassword(pw);
+            setPw('');
+          }}
+          style={{ display: 'grid', gap: 14, maxWidth: 420 }}
+        >
+          <input
+            type="password"
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
+            placeholder="Leads password"
+            aria-label="Leads password"
+            autoComplete="off"
+            className="dl-input"
+          />
+          <button type="submit" className="btn-primary" style={{ justifyContent: 'center', padding: '13px 20px' }}>
+            Unlock leads
+          </button>
+          {error ? <div style={{ color: '#c2400f', fontSize: 14.5 }}>{error}</div> : null}
+        </form>
+      </>
+    );
+  }
 
   return (
     <>

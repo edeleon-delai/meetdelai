@@ -93,14 +93,18 @@ tools: get_site_content, update_site_content
 
 **Storage is the contract; email is best-effort.** If Resend is unset or errors the lead is still saved and the response is still `201` — with `emailed: false`. Losing a lead because a mail API had a bad minute is the worse failure. If the POST fails outright the form shows a mailto link pre-filled with what they typed, so nothing is lost.
 
-`GET /api/leads` backs the admin's Leads tab. It holds `DELAI_ADMIN_SECRET` server-side (upstream `GET /delai/leads` is 401 without it) and gates itself on `ADMIN_PASSWORD`, checked against an env var. **This is the only real access boundary in the admin** — the sign-in screen compares `VITE_ADMIN_PASSWORD`, which is compiled into the public bundle. Set `ADMIN_PASSWORD` to the same value so one sign-in unlocks both.
+`GET /api/leads` backs the admin's Leads tab. It holds `DELAI_ADMIN_SECRET` server-side (upstream `GET /delai/leads` is 401 without it) and gates itself on `ADMIN_PASSWORD`, checked against an env var. **This is the only real access boundary in the admin** — the sign-in screen compares `VITE_ADMIN_PASSWORD`, which is compiled into the public bundle.
+
+**`ADMIN_PASSWORD` must NOT equal `VITE_ADMIN_PASSWORD`.** This file used to say the opposite — "set them the same so one sign-in unlocks both" — and that advice was wrong. `VITE_ADMIN_PASSWORD` ships to every visitor inside the JS bundle and can be read out of it in seconds; making the server-side password equal to it means anyone can `curl` the lead table, which holds real names, emails and business detail. The two vars are two boundaries, and the second is only worth something when it holds a different, genuinely private value.
+
+What forced them to match was `Admin.tsx` stashing the typed sign-in password and reusing it as the leads password. It no longer does: **`LeadsTab` prompts for `ADMIN_PASSWORD` itself**, holds it in component state (never localStorage, never a prop), and drops it on sign-out. `src/pages/admin/leadsAuth.ts` owns the fetch and is unit-tested — including a guard test that fails if a password prop is ever threaded back into `LeadsTab`. Signing in and reading leads are two separate unlocks by design.
 
 Env vars (Vercel project settings, never the repo) — see `.env.example`:
 
 | Var | Side | Without it |
 |---|---|---|
 | `VITE_ADMIN_PASSWORD` | client | `/admin` cannot be signed into |
-| `ADMIN_PASSWORD` | server | Leads tab returns 503 |
+| `ADMIN_PASSWORD` | server | Leads tab returns 503 — and must differ from the client one |
 | `DELAI_ADMIN_SECRET` | server | Leads tab returns 503 |
 | `RESEND_API_KEY` | server | leads still stored, no email |
 | `LEAD_NOTIFY_EMAIL` / `LEAD_FROM_EMAIL` | server | defaults below |
