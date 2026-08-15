@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# DELAI security baseline — pre-commit secret scan
+#
+# Activated per-clone with: git config core.hooksPath .githooks
+# Skipped with --no-verify (emergencies only — fix the secret instead)
+
+set -eu
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  cat >&2 <<'WARN'
+⚠️  gitleaks not installed — secret scan skipped.
+   Install: brew install gitleaks  (mac)
+            scoop install gitleaks  (win)
+            See https://github.com/gitleaks/gitleaks for other platforms.
+WARN
+  exit 0
+fi
+
+CONFIG_FLAG=""
+if [ -f .gitleaks.toml ]; then
+  CONFIG_FLAG="--config=.gitleaks.toml"
+fi
+
+# protect --staged scans only what's about to be committed (fast).
+# --redact ensures the secret value never appears in the error output.
+if ! gitleaks protect --staged --redact --no-banner $CONFIG_FLAG; then
+  cat >&2 <<'BLOCKED'
+
+🛑 Commit blocked: gitleaks detected secrets in staged changes.
+
+   Options:
+   1. Remove the secret. Move it to .env (gitignored) and read via process.env.
+   2. If it's a placeholder / known-safe pattern, add an allowlist entry
+      to .gitleaks.toml in the same commit.
+   3. Emergency override (use sparingly): git commit --no-verify
+
+   Reference: https://github.com/gitleaks/gitleaks
+
+BLOCKED
+  exit 1
+fi
+
+exit 0

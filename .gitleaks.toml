@@ -1,0 +1,112 @@
+# DELAI / SimpleLenses gitleaks baseline
+# Extends default rules + adds stack-specific patterns
+# Reference: https://github.com/gitleaks/gitleaks/blob/master/config/gitleaks.toml
+
+title = "DELAI Security Baseline"
+
+[extend]
+useDefault = true
+
+# ---------------------------------------------------------------------------
+# Custom rules — stack-specific patterns the default config misses
+# ---------------------------------------------------------------------------
+
+[[rules]]
+id = "supabase-service-role-jwt"
+description = "Supabase service_role JWT (full RLS bypass — never ship to client)"
+regex = '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[A-Za-z0-9_-]*c2VydmljZV9yb2xl[A-Za-z0-9_-]*\.[A-Za-z0-9_-]+'''
+keywords = ["service_role", "eyJ"]
+
+[[rules]]
+id = "vite-ai-api-key-assignment"
+description = "VITE_*_API_KEY for AI provider — would ship to browser bundle (architecture violation)"
+regex = '''VITE_(OPENAI|ANTHROPIC|GROQ|GEMINI|GOOGLE_AI|MISTRAL|COHERE|REPLICATE|FAL|PERPLEXITY|XAI|TOGETHER|HUGGINGFACE|DEEPSEEK)_API_KEY'''
+keywords = ["VITE_OPENAI", "VITE_ANTHROPIC", "VITE_GROQ", "VITE_GEMINI", "VITE_FAL", "VITE_PERPLEXITY"]
+
+[[rules]]
+id = "next-public-ai-api-key-assignment"
+description = "NEXT_PUBLIC_*_API_KEY for AI provider — would ship to browser bundle"
+regex = '''NEXT_PUBLIC_(OPENAI|ANTHROPIC|GROQ|GEMINI|GOOGLE_AI|MISTRAL|COHERE|REPLICATE|FAL|PERPLEXITY|XAI|TOGETHER|HUGGINGFACE|DEEPSEEK)_API_KEY'''
+keywords = ["NEXT_PUBLIC_OPENAI", "NEXT_PUBLIC_ANTHROPIC", "NEXT_PUBLIC_GROQ", "NEXT_PUBLIC_FAL"]
+
+[[rules]]
+id = "vite-server-secret"
+description = "VITE_* prefixed SECRET / SERVICE_ROLE / PRIVATE_KEY — server secret leaking to client"
+regex = '''VITE_[A-Z0-9_]*(SECRET_KEY|SECRET|SERVICE_ROLE|PRIVATE_KEY|ADMIN_KEY|ADMIN_TOKEN|STRIPE_SECRET)'''
+keywords = ["VITE_"]
+
+[[rules]]
+id = "next-public-server-secret"
+description = "NEXT_PUBLIC_* prefixed SECRET / SERVICE_ROLE — server secret leaking to client"
+regex = '''NEXT_PUBLIC_[A-Z0-9_]*(SECRET_KEY|SECRET|SERVICE_ROLE|PRIVATE_KEY|ADMIN_KEY|ADMIN_TOKEN|STRIPE_SECRET)'''
+keywords = ["NEXT_PUBLIC_"]
+
+[[rules]]
+id = "telegram-bot-token"
+description = "Telegram bot token"
+regex = '''\b[0-9]{8,10}:[A-Za-z0-9_-]{35}\b'''
+keywords = [":AA"]
+
+[[rules]]
+id = "serper-api-key"
+description = "Serper API key (40-hex format)"
+regex = '''(?i)serper[_-]?(api[_-]?)?key['"\s:=]+[0-9a-f]{40}'''
+keywords = ["serper"]
+
+[[rules]]
+id = "dataforseo-credentials"
+description = "DataForSEO inline password assignment"
+regex = '''(?i)DATAFORSEO_PASSWORD['"\s:=]+[A-Za-z0-9]{12,}'''
+keywords = ["DATAFORSEO"]
+
+# ---------------------------------------------------------------------------
+# Allowlist — known-safe patterns, paths, docs placeholders
+# ---------------------------------------------------------------------------
+
+[allowlist]
+description = "Global allowlist"
+
+paths = [
+  '''\.env\.example$''',
+  '''\.env\.sample$''',
+  '''\.env\.template$''',
+  '''(^|/)CHANGELOG\.md$''',
+  '''(^|/)package-lock\.json$''',
+  '''(^|/)yarn\.lock$''',
+  '''(^|/)pnpm-lock\.yaml$''',
+  '''(^|/)bun\.lock$''',
+  '''(^|/)bun\.lockb$''',
+  '''\.gitleaks\.toml$''',
+  '''SECURITY-SETUP\.md$''',
+]
+
+regexes = [
+  # Generic placeholders
+  '''your[-_](api[-_])?key[-_]here''',
+  '''your[-_].*[-_]here''',
+  '''<your[-_].*?>''',
+  '''<.*[-_]token>''',
+  '''EXAMPLE[-_]?(KEY|TOKEN|SECRET|VALUE)''',
+  '''REPLACE[-_]?(ME|WITH)''',
+  '''(?i)changeme''',
+  '''xxxx+''',
+  '''(?i)placeholder''',
+  '''TU[-_](CLAVE|TOKEN|API)''',
+
+  # Stripe TEST placeholders (live keys still blocked by default rules)
+  '''sk_test_(YOUR|EXAMPLE|TU|123)''',
+  '''pk_test_(YOUR|EXAMPLE|TU|123)''',
+
+  # AdMob test IDs (Google's documented test units)
+  '''ca-app-pub-3940256099942544''',
+  '''ca-app-pub-\.\.\.\.''',
+
+  # Common doc ellipses
+  '''sk-ant-\.\.\.+''',
+  '''sk-proj-\.\.\.+''',
+  '''AKIA\.\.\.+''',
+  '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlvdXItcHJvamVjdC1yZWYi''',
+
+  # BotFather example token (1234567890:ABC-DEF1234ghIkl-zyx57W2v1u123ew11)
+  '''1234567890:ABC-DEF1234ghIkl-zyx57W2v1u123ew11''',
+]
