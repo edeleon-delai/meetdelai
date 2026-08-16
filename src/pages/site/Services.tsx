@@ -106,7 +106,7 @@ export function Services() {
                     <Link to="/work" style={{ borderBottom: '1px solid var(--dl-ink)' }}>
                       portfolio
                     </Link>{' '}
-                    — PAGE, Alba and EyeGoal are all things we built, shipped, and still run.
+                    — PAGE and Alba are both things we built, shipped, and still run.
                   </p>
                 )}
               </div>
