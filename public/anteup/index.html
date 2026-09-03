@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AnteUp — You are your last 1,000 decisions</title>
+<meta name="description" content="Your apps stay shut until you earn them back. Put up an Ante, do the thing, collect the time.">
+<meta property="og:title" content="AnteUp — You are your last 1,000 decisions">
+<meta property="og:description" content="Your apps stay shut until you earn them back.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://meetdelai.com/anteup">
+<link rel="canonical" href="https://meetdelai.com/anteup">
+<style>
+  :root { color-scheme: dark; --ink:#0c0b0a; --bone:#faf8f4; --amber:#E8993A; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ink); color: rgba(250,248,244,0.82);
+    font: 400 17px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 46rem; margin: 0 auto; padding: 0 1.5rem; }
+  header { padding: 2.2rem 0 0; }
+  .mark { display: flex; align-items: center; gap: .6rem; }
+  .mark svg { display: block; }
+  .word { font: 600 .82rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+          letter-spacing: .22em; color: var(--amber); text-transform: uppercase; }
+
+  h1 { color: var(--bone); font-size: clamp(2.4rem, 8vw, 4rem); line-height: 1.02;
+       letter-spacing: -0.035em; font-weight: 800; margin: 3.4rem 0 0; }
+  .sub { color: rgba(250,248,244,0.55); font-size: clamp(1.1rem,3.4vw,1.4rem); margin: .9rem 0 0; }
+  .rule { height: 1px; background: var(--amber); margin: 2.2rem 0; }
+
+  .lede { color: var(--bone); font-size: 1.15rem; }
+  h2 { color: var(--bone); font-size: .82rem; letter-spacing: .22em; text-transform: uppercase;
+       font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600;
+       margin: 3.6rem 0 1.1rem; color: rgba(250,248,244,0.45); }
+
+  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; }
+  ol.steps li { counter-increment: s; position: relative; padding: 0 0 0 3rem; margin: 0 0 1.5rem; }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -.15rem;
+    width: 2rem; height: 2rem; display: grid; place-items: center;
+    border: 1px solid rgba(250,248,244,0.18); color: var(--amber);
+    font: 600 .9rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  ol.steps b { color: var(--bone); font-weight: 600; display: block; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem,1fr)); gap: 1px;
+          background: rgba(250,248,244,0.12); border: 1px solid rgba(250,248,244,0.12); }
+  .grid div { background: var(--ink); padding: 1.1rem 1rem; }
+  .grid b { color: var(--bone); display: block; font-weight: 600; }
+  .grid span { font-size: .92rem; color: rgba(250,248,244,0.5); }
+
+  .cta { display: inline-block; margin: 1.4rem 0 0; padding: 1rem 2.2rem;
+         background: var(--bone); color: var(--ink); text-decoration: none;
+         font-weight: 700; letter-spacing: .01em; }
+  .cta:hover { background: var(--amber); }
+  .note { font-size: .95rem; color: rgba(250,248,244,0.45); margin-top: .9rem; }
+
+  footer { margin: 5rem 0 0; border-top: 1px solid rgba(250,248,244,0.12); padding: 1.8rem 0 4rem;
+           font-size: .95rem; color: rgba(250,248,244,0.45); }
+  footer a { color: rgba(250,248,244,0.7); }
+  footer .quote { color: rgba(250,248,244,0.35); font-style: normal; margin-bottom: 1rem; }
+  a { color: var(--amber); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="mark">
+      <svg width="26" height="26" viewBox="0 0 96 96" aria-hidden="true">
+        <rect x="14" y="24" width="68" height="32" fill="#E8993A"/>
+        <rect x="15" y="65" width="66" height="30" fill="none" stroke="rgba(250,248,244,0.55)" stroke-width="2"/>
+      </svg>
+      <span class="word">AnteUp</span>
+    </div>
+  </header>
+
+  <h1>You are your last 1,000 decisions.</h1>
+  <p class="sub">Today is decision 1,001.</p>
+
+  <div class="rule"></div>
+
+  <p class="lede">The apps you lose time to stay shut by default. Not blocked on a timer, not guilt-tripped — shut, until you earn them back.</p>
+  <p>Put up an Ante against one of them. Go for a walk, read, train, focus. The minutes you earn are the minutes they open for. Nothing resets, nothing is taken away, and there is no streak to break.</p>
+
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li><b>Pick the app you want back.</b> iOS holds the list — we never learn which apps you chose, only how many.</li>
+    <li><b>Put up an Ante.</b> Choose what you'll do instead, and for how long.</li>
+    <li><b>Do the thing.</b> Apple Health settles a walk or a workout. The camera can count reps if you'd rather not wear anything.</li>
+    <li><b>Collect.</b> Your apps open for what you earned. Or save it and spend it later.</li>
+  </ol>
+
+  <h2>What counts</h2>
+  <div class="grid">
+    <div><b>Walk</b><span>Steps or distance</span></div>
+    <div><b>Exercise</b><span>Workout or reps</span></div>
+    <div><b>Read</b><span>Time away</span></div>
+    <div><b>Focus</b><span>Time away</span></div>
+    <div><b>Sleep</b><span>Hours logged</span></div>
+    <div><b>Your thing</b><span>You decide</span></div>
+  </div>
+  <p class="note">Activity counts whether or not you declared it. A walk you took this morning is still a walk.</p>
+
+  <h2>Get it</h2>
+  <p>AnteUp is in TestFlight while we finish the first release.</p>
+  <a class="cta" href="mailto:support@meetdelai.com?subject=AnteUp%20TestFlight">Ask for an invite</a>
+  <p class="note">iPhone, iOS 16.4 or later. Screen Time permission is required — it is the only thing that can actually shut an app.</p>
+
+  <footer>
+    <p class="quote">You are your last 1000 decisions.</p>
+    <p>
+      <a href="mailto:support@meetdelai.com">support@meetdelai.com</a> &nbsp;·&nbsp;
+      <a href="/anteup/privacy">Privacy</a> &nbsp;·&nbsp;
+      <a href="/anteup/terms">Terms</a>
+    </p>
+    <p>AnteUp is made by DELAI.</p>
+  </footer>
+
+</div>
+</body>
+</html>
