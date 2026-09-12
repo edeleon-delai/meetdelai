@@ -4,121 +4,216 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AnteUp — You are your last 1,000 decisions</title>
-<meta name="description" content="Your apps stay shut until you earn them back. Put up an Ante, do the thing, collect the time.">
+<meta name="description" content="Pay for your screen time with something real. AnteUp locks the app you keep reopening; earn it back by reading, walking, focusing, or moving.">
 <meta property="og:title" content="AnteUp — You are your last 1,000 decisions">
-<meta property="og:description" content="Your apps stay shut until you earn them back.">
+<meta property="og:description" content="Pay for your screen time with something real. Twenty-five minutes in, twenty-five minutes out.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://meetdelai.com/anteup">
 <link rel="canonical" href="https://meetdelai.com/anteup">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-  :root { color-scheme: dark; --ink:#0c0b0a; --bone:#faf8f4; --amber:#E8993A; }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--ink); color: rgba(250,248,244,0.82);
-    font: 400 17px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
+  :root{
+    --color-bg:#f3f2f2;
+    --color-surface:#eae9e9;
+    --color-text:#201e1d;
+    --color-divider:color-mix(in srgb, #201e1d 40%, transparent);
+    --color-neutral-700:#605d5d;
+    --color-neutral-800:#444141;
+    --shadow-md:0 3px 10px color-mix(in srgb, #2d2b2b 16%, transparent);
+    --shadow-lg:0 12px 32px color-mix(in srgb, #2d2b2b 22%, transparent);
   }
-  .wrap { max-width: 46rem; margin: 0 auto; padding: 0 1.5rem; }
-  header { padding: 2.2rem 0 0; }
-  .mark { display: flex; align-items: center; gap: .6rem; }
-  .mark svg { display: block; }
-  .word { font: 600 .82rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-          letter-spacing: .22em; color: var(--amber); text-transform: uppercase; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:Archivo,system-ui,sans-serif;text-wrap:pretty;overflow-x:hidden}
+  a{color:#7A4709;text-decoration:none}
+  a:hover{color:#E89B3C}
+  img{display:block;max-width:100%}
+  /* The AnteUp mark: a filled amber block above a hairline-outlined block. */
+  .antemark{display:block;overflow:visible}
 
-  h1 { color: var(--bone); font-size: clamp(2.4rem, 8vw, 4rem); line-height: 1.02;
-       letter-spacing: -0.035em; font-weight: 800; margin: 3.4rem 0 0; }
-  .sub { color: rgba(250,248,244,0.55); font-size: clamp(1.1rem,3.4vw,1.4rem); margin: .9rem 0 0; }
-  .rule { height: 1px; background: var(--amber); margin: 2.2rem 0; }
-
-  .lede { color: var(--bone); font-size: 1.15rem; }
-  h2 { color: var(--bone); font-size: .82rem; letter-spacing: .22em; text-transform: uppercase;
-       font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600;
-       margin: 3.6rem 0 1.1rem; color: rgba(250,248,244,0.45); }
-
-  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; }
-  ol.steps li { counter-increment: s; position: relative; padding: 0 0 0 3rem; margin: 0 0 1.5rem; }
-  ol.steps li::before {
-    content: counter(s); position: absolute; left: 0; top: -.15rem;
-    width: 2rem; height: 2rem; display: grid; place-items: center;
-    border: 1px solid rgba(250,248,244,0.18); color: var(--amber);
-    font: 600 .9rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Reflow the desktop-canvas grids for narrow screens. The layout uses inline
+     styles, so these hooks match those inline grid declarations directly. */
+  @media (max-width:820px){
+    /* hero: text over phone */
+    [style*="minmax(0,7fr)"]{grid-template-columns:1fr!important;gap:clamp(32px,6vw,48px)!important;align-items:start!important}
+    [style*="max-width:330px"]{justify-self:start!important;max-width:300px!important}
+    /* stats: 2 x 2 */
+    [style*="repeat(4,auto)"]{grid-template-columns:1fr 1fr!important;justify-content:start!important;gap:32px 24px!important}
+    /* how-it-works rows: stack number, title, copy */
+    [style*="minmax(56px,120px)"]{grid-template-columns:1fr!important;gap:8px!important}
+    /* the app: two phones per row that actually shrink to fit */
+    [style*="minmax(210px,1fr)"]{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important}
+    /* ledger: copy over phone */
+    [style*="minmax(0,6fr)"]{grid-template-columns:1fr!important;gap:clamp(28px,6vw,40px)!important}
   }
-  ol.steps b { color: var(--bone); font-weight: 600; display: block; }
-
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem,1fr)); gap: 1px;
-          background: rgba(250,248,244,0.12); border: 1px solid rgba(250,248,244,0.12); }
-  .grid div { background: var(--ink); padding: 1.1rem 1rem; }
-  .grid b { color: var(--bone); display: block; font-weight: 600; }
-  .grid span { font-size: .92rem; color: rgba(250,248,244,0.5); }
-
-  .cta { display: inline-block; margin: 1.4rem 0 0; padding: 1rem 2.2rem;
-         background: var(--bone); color: var(--ink); text-decoration: none;
-         font-weight: 700; letter-spacing: .01em; }
-  .cta:hover { background: var(--amber); }
-  .note { font-size: .95rem; color: rgba(250,248,244,0.45); margin-top: .9rem; }
-
-  footer { margin: 5rem 0 0; border-top: 1px solid rgba(250,248,244,0.12); padding: 1.8rem 0 4rem;
-           font-size: .95rem; color: rgba(250,248,244,0.45); }
-  footer a { color: rgba(250,248,244,0.7); }
-  footer .quote { color: rgba(250,248,244,0.35); font-style: normal; margin-bottom: 1rem; }
-  a { color: var(--amber); }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header>
-    <div class="mark">
-      <svg width="26" height="26" viewBox="0 0 96 96" aria-hidden="true">
-        <rect x="14" y="24" width="68" height="32" fill="#E8993A"/>
-        <rect x="15" y="65" width="66" height="30" fill="none" stroke="rgba(250,248,244,0.55)" stroke-width="2"/>
-      </svg>
-      <span class="word">AnteUp</span>
-    </div>
-  </header>
+<div style="background:var(--color-bg);color:var(--color-text);font-family:Archivo,sans-serif">
 
-  <h1>You are your last 1,000 decisions.</h1>
-  <p class="sub">Today is decision 1,001.</p>
-
-  <div class="rule"></div>
-
-  <p class="lede">The apps you lose time to stay shut by default. Not blocked on a timer, not guilt-tripped — shut, until you earn them back.</p>
-  <p>Put up an Ante against one of them. Go for a walk, read, train, focus. The minutes you earn are the minutes they open for. Nothing resets, nothing is taken away, and there is no streak to break.</p>
-
-  <h2>How it works</h2>
-  <ol class="steps">
-    <li><b>Pick the app you want back.</b> iOS holds the list — we never learn which apps you chose, only how many.</li>
-    <li><b>Put up an Ante.</b> Choose what you'll do instead, and for how long.</li>
-    <li><b>Do the thing.</b> Apple Health settles a walk or a workout. The camera can count reps if you'd rather not wear anything.</li>
-    <li><b>Collect.</b> Your apps open for what you earned. Or save it and spend it later.</li>
-  </ol>
-
-  <h2>What counts</h2>
-  <div class="grid">
-    <div><b>Walk</b><span>Steps or distance</span></div>
-    <div><b>Exercise</b><span>Workout or reps</span></div>
-    <div><b>Read</b><span>Time away</span></div>
-    <div><b>Focus</b><span>Time away</span></div>
-    <div><b>Sleep</b><span>Hours logged</span></div>
-    <div><b>Your thing</b><span>You decide</span></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:20px clamp(20px,5vw,72px);border-bottom:2px solid var(--color-divider)">
+    <span style="display:flex;align-items:center;gap:14px;font-size:19px;font-weight:800;letter-spacing:0.26em">
+      <svg class="antemark" width="20" viewBox="0 0 24 27.1" aria-hidden="true">
+        <rect x="0" y="0" width="24" height="12" fill="#E89B3C"/>
+        <rect x="0.9" y="15.1" width="22.2" height="11" fill="none" stroke="var(--color-text)" stroke-width="1.6"/>
+      </svg>ANTEUP
+    </span>
+    <span style="display:flex;align-items:center;gap:clamp(16px,3vw,36px);flex-wrap:wrap;font-size:14px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600">
+      <a href="#how" style="color:var(--color-text)">How it works</a>
+      <a href="#screens" style="color:var(--color-text)">The app</a>
+      <a href="#ledger" style="color:var(--color-text)">The ledger</a>
+      <a href="#get" style="background:#E89B3C;color:#14100a;padding:12px 20px;letter-spacing:0.08em">Get AnteUp</a>
+    </span>
   </div>
-  <p class="note">Activity counts whether or not you declared it. A walk you took this morning is still a walk.</p>
 
-  <h2>Get it</h2>
-  <p>AnteUp is in TestFlight while we finish the first release.</p>
-  <a class="cta" href="mailto:support@meetdelai.com?subject=AnteUp%20TestFlight">Ask for an invite</a>
-  <p class="note">iPhone, iOS 16.4 or later. Screen Time permission is required — it is the only thing that can actually shut an app.</p>
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,72px)">
 
-  <footer>
-    <p class="quote">You are your last 1000 decisions.</p>
-    <p>
-      <a href="mailto:support@meetdelai.com">support@meetdelai.com</a> &nbsp;·&nbsp;
-      <a href="/anteup/privacy">Privacy</a> &nbsp;·&nbsp;
-      <a href="/anteup/terms">Terms</a>
-    </p>
-    <p>AnteUp is made by DELAI.</p>
-  </footer>
+    <div style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,5vw,80px);align-items:end;padding:clamp(56px,8vw,120px) 0 clamp(48px,6vw,88px)">
+      <div>
+        <h1 style="font-family:Archivo,sans-serif;font-weight:800;font-size:clamp(46px,7vw,94px);line-height:0.98;letter-spacing:-0.035em;margin:0 0 0 -0.058em">
+          <span style="display:block">Pay for your</span>
+          <span style="display:block">screen time</span>
+          <span style="display:block;color:#B36A16">with something real.</span>
+        </h1>
+        <p style="font-size:clamp(18px,2vw,22px);line-height:1.5;max-width:52ch;color:var(--color-neutral-800);margin:clamp(28px,3vw,40px) 0 0">
+          AnteUp locks the app you keep reopening. To get it back, you put in the thing you'd rather have done — read, walk, focus, exercise, sleep. Twenty-five minutes in, twenty-five minutes out. No blocklist, no lecture, no streak to break.
+        </p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-top:clamp(28px,3vw,40px)">
+          <span style="background:#E89B3C;color:#14100a;font-size:17px;font-weight:700;letter-spacing:0.04em;padding:18px 28px">Coming Soon</span>
+          <a href="#how" style="border:2px solid var(--color-text);color:var(--color-text);font-size:17px;font-weight:700;letter-spacing:0.04em;padding:16px 28px">See how it works</a>
+        </div>
+      </div>
+      <div style="justify-self:end;width:100%;max-width:330px">
+        <img src="uploads/IMG_5432.png" alt="Today's Ante: 25 minutes of exercise for 25 minutes of NBA 2K" style="display:block;width:100%">
+      </div>
+    </div>
+
+    <hr style="height:2px;border:0;margin:0;background:var(--color-divider)">
+
+    <div style="display:grid;grid-template-columns:repeat(4,auto);justify-content:space-between;gap:clamp(24px,3vw,40px);padding:clamp(40px,5vw,64px) 0">
+      <div>
+        <div style="font-size:clamp(34px,3.6vw,50px);font-weight:800;color:#B36A16;letter-spacing:-0.03em;line-height:1">25:25</div>
+        <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:var(--color-neutral-700);margin-top:12px;max-width:20ch">Minutes in, minutes earned</div>
+      </div>
+      <div>
+        <div style="font-size:clamp(34px,3.6vw,50px);font-weight:800;color:#B36A16;letter-spacing:-0.03em;line-height:1">1001</div>
+        <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:var(--color-neutral-700);margin-top:12px;max-width:20ch">Decisions on the ledger</div>
+      </div>
+      <div>
+        <div style="font-size:clamp(34px,3.6vw,50px);font-weight:800;color:#B36A16;letter-spacing:-0.03em;line-height:1">5</div>
+        <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:var(--color-neutral-700);margin-top:12px;max-width:20ch">Ways to pay, or write your own</div>
+      </div>
+      <div>
+        <div style="font-size:clamp(34px,3.6vw,50px);font-weight:800;color:#B36A16;letter-spacing:-0.03em;line-height:1">0</div>
+        <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:var(--color-neutral-700);margin-top:12px;max-width:20ch">Streaks that can break</div>
+      </div>
+    </div>
+
+    <hr style="height:2px;border:0;margin:0;background:var(--color-divider)">
+
+    <div id="how" style="padding:clamp(48px,6vw,88px) 0 clamp(40px,5vw,64px)">
+      <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;color:#7A4709;margin-bottom:clamp(28px,3vw,40px)">How it works</div>
+
+      <div style="display:grid;grid-template-columns:minmax(56px,120px) minmax(0,380px) minmax(0,1fr);gap:20px clamp(24px,4vw,72px);align-items:baseline;padding:clamp(24px,3vw,40px) 0">
+        <div style="display:flex;align-items:center;gap:14px;font-size:15px;font-weight:800"><span style="width:10px;height:10px;background:#E89B3C;display:block"></span>01</div>
+        <h2 style="font-size:clamp(22px,2.4vw,28px);font-weight:800;letter-spacing:-0.015em;margin:0;line-height:1.15">Pick the prize</h2>
+        <p style="font-size:16.5px;line-height:1.6;color:var(--color-neutral-800);margin:0;max-width:52ch">Choose the apps you actually want to earn — the feed, the streaming, the game. AnteUp reads your installed apps and locks only what you pick.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(56px,120px) minmax(0,380px) minmax(0,1fr);gap:20px clamp(24px,4vw,72px);align-items:baseline;padding:clamp(24px,3vw,40px) 0;border-top:2px solid var(--color-divider)">
+        <div style="display:flex;align-items:center;gap:14px;font-size:15px;font-weight:800"><span style="width:10px;height:10px;background:#E89B3C;display:block"></span>02</div>
+        <h2 style="font-size:clamp(22px,2.4vw,28px);font-weight:800;letter-spacing:-0.015em;margin:0;line-height:1.15">Name your price</h2>
+        <p style="font-size:16.5px;line-height:1.6;color:var(--color-neutral-800);margin:0;max-width:52ch">What would you rather be doing? Read, walk, focus, exercise, sleep — or write your own. You set the exchange rate, not an algorithm.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(56px,120px) minmax(0,380px) minmax(0,1fr);gap:20px clamp(24px,4vw,72px);align-items:baseline;padding:clamp(24px,3vw,40px) 0;border-top:2px solid var(--color-divider)">
+        <div style="display:flex;align-items:center;gap:14px;font-size:15px;font-weight:800"><span style="width:10px;height:10px;background:#E89B3C;display:block"></span>03</div>
+        <h2 style="font-size:clamp(22px,2.4vw,28px);font-weight:800;letter-spacing:-0.015em;margin:0;line-height:1.15">Accept the ante</h2>
+        <p style="font-size:16.5px;line-height:1.6;color:var(--color-neutral-800);margin:0;max-width:52ch">One clean trade, stated plainly before you start: what you put in, what you collect. Accept it and the clock runs.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(56px,120px) minmax(0,380px) minmax(0,1fr);gap:20px clamp(24px,4vw,72px);align-items:baseline;padding:clamp(24px,3vw,40px) 0;border-top:2px solid var(--color-divider)">
+        <div style="display:flex;align-items:center;gap:14px;font-size:15px;font-weight:800"><span style="width:10px;height:10px;background:#E89B3C;display:block"></span>04</div>
+        <h2 style="font-size:clamp(22px,2.4vw,28px);font-weight:800;letter-spacing:-0.015em;margin:0;line-height:1.15">Prove it, then collect</h2>
+        <p style="font-size:16.5px;line-height:1.6;color:var(--color-neutral-800);margin:0;max-width:52ch">Prop up the phone and move — the camera counts the work. When the ante is paid, the app unlocks for exactly as long as you bought.</p>
+      </div>
+    </div>
+
+    <hr style="height:2px;border:0;margin:0;background:var(--color-divider)">
+
+    <div id="screens" style="padding:clamp(48px,6vw,88px) 0">
+      <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;color:#7A4709">The app</div>
+      <h2 style="font-size:clamp(30px,4vw,52px);font-weight:800;letter-spacing:-0.025em;line-height:1.02;margin:20px 0 0 -0.04em;max-width:24ch">Four screens. No dashboard to learn.</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:clamp(20px,3vw,40px);margin-top:clamp(32px,4vw,56px)">
+        <div>
+          <img src="uploads/pasted-1789144244971-0.png" alt="Choosing which apps to earn" style="display:block;width:100%">
+          <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:var(--color-neutral-700);margin-top:16px">Pick the apps</div>
+        </div>
+        <div>
+          <img src="uploads/IMG_5431.png" alt="What would you rather be doing" style="display:block;width:100%">
+          <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:var(--color-neutral-700);margin-top:16px">Set the price</div>
+        </div>
+        <div>
+          <img src="uploads/IMG_5432.png" alt="Today's ante" style="display:block;width:100%">
+          <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:var(--color-neutral-700);margin-top:16px">Accept the ante</div>
+        </div>
+        <div>
+          <img src="uploads/IMG_5422-0d1c83ad.PNG" alt="The 1001 ledger" style="display:block;width:100%">
+          <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:var(--color-neutral-700);margin-top:16px">Keep the ledger</div>
+        </div>
+      </div>
+      <div style="font-size:14px;line-height:1.5;color:var(--color-neutral-700);margin-top:clamp(24px,3vw,36px);max-width:70ch">App names and icons shown are the property of their respective owners. AnteUp is not affiliated with, endorsed by, or sponsored by any of the apps shown.</div>
+    </div>
+
+    <hr style="height:2px;border:0;margin:0;background:var(--color-divider)">
+
+    <div id="ledger" style="display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(28px,5vw,80px);align-items:center;padding:clamp(48px,6vw,88px) 0">
+      <div>
+        <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;color:#7A4709">The ledger</div>
+        <h2 style="font-size:clamp(30px,4vw,52px);font-weight:800;letter-spacing:-0.025em;line-height:1.02;margin:20px 0 0 -0.04em">1001 decisions. Nothing ever resets.</h2>
+        <p style="font-size:17px;line-height:1.6;color:var(--color-neutral-800);margin:24px 0 0;max-width:48ch">Most habit apps punish you for missing a day. AnteUp just counts the days you showed up, out of a thousand and one. Miss a Tuesday and the number waits for you — it only ever goes up.</p>
+        <p style="font-size:17px;line-height:1.6;color:var(--color-neutral-800);margin:20px 0 0;max-width:48ch">Twenty-two badges mark the way there. None of them can be taken back.</p>
+      </div>
+      <div style="justify-self:center;width:100%;max-width:320px">
+        <img src="uploads/IMG_5422-0d1c83ad.PNG" alt="Decisions won, out of 1001" style="display:block;width:100%">
+      </div>
+    </div>
+
+    <hr style="height:2px;border:0;margin:0;background:var(--color-divider)">
+
+    <div style="padding:clamp(48px,6vw,80px) 0">
+      <blockquote style="font-size:clamp(24px,3vw,38px);font-weight:800;letter-spacing:-0.02em;line-height:1.2;margin:0;max-width:34ch">&ldquo;I didn't need an app to shame me. I needed one to charge me.&rdquo;</blockquote>
+      <div style="font-size:15px;color:var(--color-neutral-700);margin-top:28px">— What AnteUp is for</div>
+    </div>
+
+  </div>
+
+  <div id="get" style="background:#E89B3C;color:#1a1208">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(56px,7vw,104px) clamp(20px,5vw,72px)">
+      <h3 style="font-size:clamp(34px,5.4vw,72px);font-weight:800;letter-spacing:-0.03em;line-height:1.02;margin:0 0 0 -0.058em;color:#14100a">
+        <span style="display:block">Stop scrolling for free.</span>
+      </h3>
+      <p style="font-size:clamp(17px,1.8vw,21px);line-height:1.5;margin:24px 0 0;max-width:46ch;color:#241a0c">Set one ante tonight. Pay it once and you'll know within a day whether this is the thing that finally works.</p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:clamp(28px,3vw,40px)">
+        <span style="background:#14100a;color:#f7f5f2;font-size:17px;font-weight:700;letter-spacing:0.04em;padding:18px 28px">Coming Soon</span>
+        <a href="#how" style="border:2px solid #14100a;color:#14100a;font-size:17px;font-weight:700;letter-spacing:0.04em;padding:16px 28px">How it works</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:40px clamp(20px,5vw,72px);display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:13px;color:var(--color-neutral-700)">
+    <span style="display:flex;align-items:center;gap:10px;letter-spacing:0.2em;font-weight:700;color:var(--color-text)">
+      <svg class="antemark" width="15" viewBox="0 0 24 27.1" aria-hidden="true">
+        <rect x="0" y="0" width="24" height="12" fill="#E89B3C"/>
+        <rect x="0.9" y="15.1" width="22.2" height="11" fill="none" stroke="var(--color-text)" stroke-width="1.6"/>
+      </svg>ANTEUP
+    </span>
+    <span><a href="/anteup/privacy" style="color:var(--color-neutral-700)">Privacy</a> · <a href="mailto:support@meetdelai.com" style="color:var(--color-neutral-700)">Support</a> · <a href="/anteup/terms" style="color:var(--color-neutral-700)">Terms</a></span>
+  </div>
 
 </div>
+
 </body>
 </html>
